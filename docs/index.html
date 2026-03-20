@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mermaid Visualizer</title>
+    <meta
+      name="description"
+      content="Lightweight Mermaid diagram editor, renderer, and exporter for GitHub Pages."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Mermaid Visualizer</p>
+          <h1>Write, render, style, and export Mermaid diagrams.</h1>
+          <p class="lede">
+            A fast, ad-free, browser-only playground for Mermaid diagrams with live
+            preview, clear errors, presets, and image exports.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button class="button secondary" id="copy-source-btn" type="button">Copy source</button>
+          <button class="button secondary" id="download-svg-btn" type="button">Export SVG</button>
+          <button class="button secondary" id="download-png-btn" type="button">Export PNG</button>
+          <button class="button primary" id="download-jpg-btn" type="button">Export JPEG</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="panel editor-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Diagram source</h2>
+              <p>Edit Mermaid text and watch the preview update automatically.</p>
+            </div>
+            <label class="field compact">
+              <span>Recent diagrams</span>
+              <select id="history-select"></select>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Mermaid code</span>
+            <textarea id="mermaid-input" spellcheck="false" aria-label="Mermaid diagram source"></textarea>
+          </label>
+
+          <div class="preset-grid" id="preset-grid" aria-label="Diagram presets"></div>
+        </section>
+
+        <section class="panel preview-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Live preview</h2>
+              <p>Rendered SVG appears here, along with any syntax errors.</p>
+            </div>
+            <div class="status" id="render-status" aria-live="polite"></div>
+          </div>
+
+          <div class="preview-frame">
+            <div class="preview-canvas" id="preview"></div>
+          </div>
+        </section>
+      </main>
+
+      <section class="panel controls-panel">
+        <div class="panel-header">
+          <div>
+            <h2>Style controls</h2>
+            <p>Use a simple base theme, presets, and local history to keep the app lightweight.</p>
+          </div>
+        </div>
+
+        <div class="controls-grid">
+          <label class="field">
+            <span>Theme</span>
+            <select id="theme-select">
+              <option value="base">Base</option>
+              <option value="default">Default</option>
+              <option value="neutral">Neutral</option>
+              <option value="dark">Dark</option>
+              <option value="forest">Forest</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Primary color</span>
+            <input id="primary-color" type="color" value="#2563eb" />
+          </label>
+
+          <label class="field">
+            <span>Background</span>
+            <input id="background-color" type="color" value="#0b1120" />
+          </label>
+
+          <label class="field">
+            <span>Font size</span>
+            <input id="font-size" type="range" min="12" max="24" value="16" />
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
