@@ -64,9 +64,57 @@ const presets = [
   },
 ];
 
+const themePresets = [
+  {
+    id: "electric",
+    title: "Electric",
+    description: "Bright blue contrast for bold technical diagrams.",
+    settings: {
+      theme: "base",
+      primaryColor: "#2563eb",
+      backgroundColor: "#0b1120",
+      fontSize: 16,
+    },
+  },
+  {
+    id: "midnight",
+    title: "Midnight",
+    description: "A darker presentation look for demos and screenshots.",
+    settings: {
+      theme: "dark",
+      primaryColor: "#8b5cf6",
+      backgroundColor: "#030712",
+      fontSize: 17,
+    },
+  },
+  {
+    id: "forest",
+    title: "Forest",
+    description: "Calmer green tones for architecture and flow diagrams.",
+    settings: {
+      theme: "forest",
+      primaryColor: "#10b981",
+      backgroundColor: "#071a14",
+      fontSize: 16,
+    },
+  },
+  {
+    id: "neutral",
+    title: "Minimal",
+    description: "Low-noise styling that reads cleanly in docs and exports.",
+    settings: {
+      theme: "neutral",
+      primaryColor: "#64748b",
+      backgroundColor: "#111827",
+      fontSize: 15,
+    },
+  },
+];
+
 const storageKeys = {
   draft: "mermaid-visualizer:draft",
   history: "mermaid-visualizer:history",
+  savedDiagrams: "mermaid-visualizer:saved-diagrams",
   settings: "mermaid-visualizer:settings",
 };
 
@@ -74,6 +122,7 @@ const state = {
   renderToken: 0,
   source: defaultSource,
   history: [],
+  savedDiagrams: [],
   settings: {
     theme: "base",
     primaryColor: "#2563eb",
@@ -90,12 +139,16 @@ const elements = {
   primaryColor: document.getElementById("primary-color"),
   backgroundColor: document.getElementById("background-color"),
   fontSize: document.getElementById("font-size"),
+  themePresetGrid: document.getElementById("theme-preset-grid"),
   presetGrid: document.getElementById("preset-grid"),
   historySelect: document.getElementById("history-select"),
   historyMeta: document.getElementById("history-meta"),
   saveHistoryBtn: document.getElementById("save-history-btn"),
   clearHistoryBtn: document.getElementById("clear-history-btn"),
   resetDemoBtn: document.getElementById("reset-demo-btn"),
+  diagramNameInput: document.getElementById("diagram-name-input"),
+  saveDiagramBtn: document.getElementById("save-diagram-btn"),
+  savedDiagramsList: document.getElementById("saved-diagrams-list"),
   copySourceBtn: document.getElementById("copy-source-btn"),
   downloadSvgBtn: document.getElementById("download-svg-btn"),
   downloadPngBtn: document.getElementById("download-png-btn"),
@@ -153,9 +206,62 @@ function firstMeaningfulLine(source) {
   );
 }
 
+function normalizeSavedDiagrams(entries) {
+  if (!Array.isArray(entries)) {
+    return [];
+  }
+
+  return entries
+    .map((entry) => {
+      if (
+        entry &&
+        typeof entry === "object" &&
+        typeof entry.name === "string" &&
+        entry.name.trim() &&
+        typeof entry.source === "string" &&
+        entry.source.trim()
+      ) {
+        return {
+          id:
+            typeof entry.id === "string" && entry.id.trim()
+              ? entry.id
+              : `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          name: entry.name.trim(),
+          source: entry.source,
+          settings: entry.settings && typeof entry.settings === "object" ? entry.settings : null,
+          savedAt:
+            typeof entry.savedAt === "string" && entry.savedAt.trim()
+              ? entry.savedAt
+              : new Date().toISOString(),
+        };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+}
+
+function formatSavedAt(savedAt) {
+  const date = new Date(savedAt);
+  if (Number.isNaN(date.getTime())) {
+    return "Saved locally";
+  }
+
+  return `Saved ${date.toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  })}`;
+}
+
 function loadState() {
   const savedDraft = localStorage.getItem(storageKeys.draft);
   const savedHistory = safeJsonParse(localStorage.getItem(storageKeys.history) ?? "[]", []);
+  const savedDiagrams = safeJsonParse(
+    localStorage.getItem(storageKeys.savedDiagrams) ?? "[]",
+    [],
+  );
   const savedSettings = safeJsonParse(
     localStorage.getItem(storageKeys.settings) ?? "{}",
     {},
@@ -166,6 +272,7 @@ function loadState() {
   }
 
   state.history = normalizeHistoryEntries(savedHistory);
+  state.savedDiagrams = normalizeSavedDiagrams(savedDiagrams);
 
   state.settings = {
     ...state.settings,
@@ -176,6 +283,10 @@ function loadState() {
 function saveDraft() {
   localStorage.setItem(storageKeys.draft, state.source);
   localStorage.setItem(storageKeys.history, JSON.stringify(state.history.slice(0, 10)));
+  localStorage.setItem(
+    storageKeys.savedDiagrams,
+    JSON.stringify(state.savedDiagrams.slice(0, 25)),
+  );
   localStorage.setItem(storageKeys.settings, JSON.stringify(state.settings));
 }
 
@@ -196,6 +307,28 @@ function renderPresetCards() {
       button.innerHTML = `<strong>${preset.title}</strong><span>${preset.description}</span>`;
       button.addEventListener("click", () => {
         setSource(preset.source, true);
+      });
+      return button;
+    }),
+  );
+}
+
+function renderThemePresetCards() {
+  elements.themePresetGrid.replaceChildren(
+    ...themePresets.map((preset) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "theme-preset-button";
+      button.innerHTML = `<strong>${preset.title}</strong><span>${preset.description}</span>`;
+      button.addEventListener("click", () => {
+        state.settings = {
+          ...state.settings,
+          ...preset.settings,
+        };
+        updateThemeControls();
+        saveDraft();
+        scheduleRender();
+        setStatus(`Applied the ${preset.title} theme preset.`, "success");
       });
       return button;
     }),
@@ -228,6 +361,73 @@ function addToHistory(source) {
   const next = [nextEntry, ...state.history.filter((entry) => entry.source !== source)];
   state.history = next.slice(0, 10);
   renderHistorySelect();
+}
+
+function renderSavedDiagrams() {
+  if (!state.savedDiagrams.length) {
+    elements.savedDiagramsList.innerHTML =
+      '<p class="empty-library">No named diagrams yet. Save one with a custom name to build your personal diagram library.</p>';
+    return;
+  }
+
+  const cards = state.savedDiagrams.map((diagram) => {
+    const article = document.createElement("article");
+    article.className = "saved-diagram-card";
+
+    const head = document.createElement("div");
+    head.className = "saved-diagram-head";
+
+    const headingBlock = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = diagram.name;
+    const timestamp = document.createElement("span");
+    timestamp.textContent = formatSavedAt(diagram.savedAt);
+    headingBlock.append(title, timestamp);
+
+    const actions = document.createElement("div");
+    actions.className = "saved-diagram-actions";
+
+    const loadButton = document.createElement("button");
+    loadButton.type = "button";
+    loadButton.className = "button secondary compact-button";
+    loadButton.textContent = "Load";
+    loadButton.addEventListener("click", () => {
+      if (diagram.settings && typeof diagram.settings === "object") {
+        state.settings = {
+          ...state.settings,
+          ...diagram.settings,
+        };
+        updateThemeControls();
+      }
+
+      elements.diagramNameInput.value = diagram.name;
+      setSource(diagram.source, false);
+      setStatus(`Loaded "${diagram.name}".`, "success");
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "button secondary compact-button";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      state.savedDiagrams = state.savedDiagrams.filter((entry) => entry.id !== diagram.id);
+      saveDraft();
+      renderSavedDiagrams();
+      setStatus(`Deleted "${diagram.name}".`, "success");
+    });
+
+    actions.append(loadButton, deleteButton);
+    head.append(headingBlock, actions);
+
+    const summary = document.createElement("p");
+    summary.className = "saved-diagram-source";
+    summary.textContent = firstMeaningfulLine(diagram.source);
+
+    article.append(head, summary);
+    return article;
+  });
+
+  elements.savedDiagramsList.replaceChildren(...cards);
 }
 
 function setStatus(message, kind = "idle") {
@@ -309,6 +509,44 @@ function clearHistory() {
   localStorage.removeItem(storageKeys.history);
   renderHistorySelect();
   setStatus("Local history cleared.", "success");
+}
+
+function saveNamedDiagram() {
+  const source = normalizeSource(elements.input.value);
+  if (!source.trim()) {
+    setStatus("Add Mermaid source before saving a named diagram.", "error");
+    return;
+  }
+
+  const requestedName = elements.diagramNameInput.value.trim();
+  const name = requestedName || firstMeaningfulLine(source).slice(0, 60);
+  const existing = state.savedDiagrams.find(
+    (entry) => entry.name.toLowerCase() === name.toLowerCase(),
+  );
+
+  const nextDiagram = {
+    id: existing?.id ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    name,
+    source,
+    settings: { ...state.settings },
+    savedAt: new Date().toISOString(),
+  };
+
+  state.savedDiagrams = [
+    nextDiagram,
+    ...state.savedDiagrams.filter((entry) => entry.id !== nextDiagram.id),
+  ].slice(0, 25);
+
+  elements.diagramNameInput.value = nextDiagram.name;
+  addToHistory(source);
+  saveDraft();
+  renderSavedDiagrams();
+  setStatus(
+    existing
+      ? `Updated the saved diagram "${nextDiagram.name}".`
+      : `Saved "${nextDiagram.name}" to your diagram library.`,
+    "success",
+  );
 }
 
 function serializeSvg(svgElement) {
@@ -539,6 +777,17 @@ function wireEvents() {
     setStatus("Reset to the default Mermaid demo.", "success");
   });
 
+  elements.saveDiagramBtn.addEventListener("click", () => {
+    saveNamedDiagram();
+  });
+
+  elements.diagramNameInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      saveNamedDiagram();
+    }
+  });
+
   elements.copySourceBtn.addEventListener("click", () => {
     void copySource().catch((error) =>
       setStatus(error instanceof Error ? error.message : String(error), "error"),
@@ -561,7 +810,9 @@ function wireEvents() {
 function initialize() {
   loadState();
   renderPresetCards();
+  renderThemePresetCards();
   renderHistorySelect();
+  renderSavedDiagrams();
   updateThemeControls();
   wireEvents();
   elements.input.value = state.source;

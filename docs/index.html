@@ -92,37 +92,86 @@
       <section class="panel controls-panel">
         <div class="panel-header">
           <div>
-            <h2>Style controls</h2>
-            <p>Use a simple base theme, presets, and local history to keep the app lightweight.</p>
+            <h2>Styles and saved diagrams</h2>
+            <p>Pick a visual direction quickly, fine-tune it, and keep named diagrams you want to revisit.</p>
           </div>
         </div>
 
-        <div class="controls-grid">
-          <label class="field">
-            <span>Theme</span>
-            <select id="theme-select">
-              <option value="base">Base</option>
-              <option value="default">Default</option>
-              <option value="neutral">Neutral</option>
-              <option value="dark">Dark</option>
-              <option value="forest">Forest</option>
-            </select>
-          </label>
+        <div class="controls-layout">
+          <section class="control-card">
+            <div class="control-card-header">
+              <div>
+                <h3>Theme presets</h3>
+                <p>Start from a visual mood, then fine-tune the details.</p>
+              </div>
+            </div>
 
-          <label class="field">
-            <span>Primary color</span>
-            <input id="primary-color" type="color" value="#2563eb" />
-          </label>
+            <div class="theme-preset-grid" id="theme-preset-grid"></div>
+          </section>
 
-          <label class="field">
-            <span>Background</span>
-            <input id="background-color" type="color" value="#0b1120" />
-          </label>
+          <section class="control-card">
+            <div class="control-card-header">
+              <div>
+                <h3>Manual style controls</h3>
+                <p>Control Mermaid theme mode, color palette, and typography.</p>
+              </div>
+            </div>
 
-          <label class="field">
-            <span>Font size</span>
-            <input id="font-size" type="range" min="12" max="24" value="16" />
-          </label>
+            <div class="controls-grid">
+              <label class="field">
+                <span>Theme</span>
+                <select id="theme-select">
+                  <option value="base">Base</option>
+                  <option value="default">Default</option>
+                  <option value="neutral">Neutral</option>
+                  <option value="dark">Dark</option>
+                  <option value="forest">Forest</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Primary color</span>
+                <input id="primary-color" type="color" value="#2563eb" />
+              </label>
+
+              <label class="field">
+                <span>Background</span>
+                <input id="background-color" type="color" value="#0b1120" />
+              </label>
+
+              <label class="field">
+                <span>Font size</span>
+                <input id="font-size" type="range" min="12" max="24" value="16" />
+              </label>
+            </div>
+          </section>
+
+          <section class="control-card save-library-card">
+            <div class="control-card-header">
+              <div>
+                <h3>Saved diagrams</h3>
+                <p>Give a diagram a real name so you can load or replace it later.</p>
+              </div>
+            </div>
+
+            <div class="save-library-form">
+              <label class="field">
+                <span>Diagram name</span>
+                <input
+                  id="diagram-name-input"
+                  type="text"
+                  maxlength="60"
+                  placeholder="Architecture overview"
+                />
+              </label>
+
+              <button class="button primary compact-button" id="save-diagram-btn" type="button">
+                Save named diagram
+              </button>
+            </div>
+
+            <div class="saved-diagrams-list" id="saved-diagrams-list" aria-live="polite"></div>
+          </section>
         </div>
       </section>
     </div>
