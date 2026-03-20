@@ -58,15 +58,39 @@ textarea {
 }
 
 .hero {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 20px;
-  justify-content: space-between;
-  align-items: end;
-  padding: 28px;
+  align-items: center;
+  padding: 20px 24px;
+}
+
+.hero-copy {
+  display: grid;
+  gap: 12px;
+}
+
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(79, 70, 229, 0.9));
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
 }
 
 .eyebrow {
-  margin: 0 0 10px;
+  margin: 0 0 4px;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--accent-2);
@@ -76,9 +100,8 @@ textarea {
 
 .hero h1 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1.05;
-  max-width: 11ch;
+  font-size: clamp(1.5rem, 2.6vw, 2.35rem);
+  line-height: 1.08;
 }
 
 .lede,
@@ -89,17 +112,35 @@ textarea {
 }
 
 .lede {
-  margin: 14px 0 0;
-  max-width: 64ch;
-  font-size: 1.02rem;
-  line-height: 1.6;
+  margin: 0;
+  max-width: 58ch;
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  color: var(--text);
+  font-size: 0.84rem;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   justify-content: end;
+  align-items: center;
 }
 
 .button {
@@ -112,6 +153,11 @@ textarea {
     transform 0.15s ease,
     border-color 0.15s ease,
     background 0.15s ease;
+}
+
+.compact-button {
+  padding: 10px 14px;
+  font-size: 0.92rem;
 }
 
 .button:hover {
@@ -165,6 +211,26 @@ textarea {
 
 .field.compact {
   min-width: 220px;
+}
+
+.history-tools {
+  display: grid;
+  gap: 10px;
+  justify-items: end;
+}
+
+.history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: end;
+}
+
+.history-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.83rem;
+  text-align: right;
 }
 
 .field span {
@@ -329,8 +395,19 @@ input[type="color"] {
   }
 
   .hero {
-    flex-direction: column;
-    align-items: start;
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .history-tools {
+    width: 100%;
+    justify-items: start;
+  }
+
+  .history-actions,
+  .history-meta {
+    justify-content: start;
+    text-align: left;
   }
 }
 

@@ -13,19 +13,34 @@
   <body>
     <div class="app-shell">
       <header class="hero">
-        <div>
-          <p class="eyebrow">Mermaid Visualizer</p>
-          <h1>Write, render, style, and export Mermaid diagrams.</h1>
+        <div class="hero-copy">
+          <div class="hero-brand">
+            <div class="brand-mark" aria-hidden="true">M</div>
+            <div>
+              <p class="eyebrow">Mermaid Visualizer</p>
+              <h1>Render Mermaid fast.</h1>
+            </div>
+          </div>
+
           <p class="lede">
-            A fast, ad-free, browser-only playground for Mermaid diagrams with live
-            preview, clear errors, presets, and image exports.
+            Compact, ad-free Mermaid editing with live preview, local history, presets,
+            and polished image exports.
           </p>
+
+          <div class="hero-meta" aria-label="Product highlights">
+            <span class="meta-pill">Live errors</span>
+            <span class="meta-pill">Local history</span>
+            <span class="meta-pill">SVG / PNG / JPEG</span>
+            <span class="meta-pill">GitHub Pages</span>
+          </div>
         </div>
+
         <div class="hero-actions">
-          <button class="button secondary" id="copy-source-btn" type="button">Copy source</button>
-          <button class="button secondary" id="download-svg-btn" type="button">Export SVG</button>
-          <button class="button secondary" id="download-png-btn" type="button">Export PNG</button>
-          <button class="button primary" id="download-jpg-btn" type="button">Export JPEG</button>
+          <button class="button secondary compact-button" id="reset-demo-btn" type="button">Reset demo</button>
+          <button class="button secondary compact-button" id="copy-source-btn" type="button">Copy source</button>
+          <button class="button secondary compact-button" id="download-svg-btn" type="button">SVG</button>
+          <button class="button secondary compact-button" id="download-png-btn" type="button">PNG</button>
+          <button class="button primary compact-button" id="download-jpg-btn" type="button">JPEG</button>
         </div>
       </header>
 
@@ -36,10 +51,19 @@
               <h2>Diagram source</h2>
               <p>Edit Mermaid text and watch the preview update automatically.</p>
             </div>
-            <label class="field compact">
-              <span>Recent diagrams</span>
-              <select id="history-select"></select>
-            </label>
+            <div class="history-tools">
+              <label class="field compact">
+                <span>Recent diagrams</span>
+                <select id="history-select"></select>
+              </label>
+
+              <div class="history-actions">
+                <button class="button secondary compact-button" id="save-history-btn" type="button">Save snapshot</button>
+                <button class="button secondary compact-button" id="clear-history-btn" type="button">Clear history</button>
+              </div>
+
+              <p class="history-meta" id="history-meta"></p>
+            </div>
           </div>
 
           <label class="field">

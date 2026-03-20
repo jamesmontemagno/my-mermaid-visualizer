@@ -92,6 +92,10 @@ const elements = {
   fontSize: document.getElementById("font-size"),
   presetGrid: document.getElementById("preset-grid"),
   historySelect: document.getElementById("history-select"),
+  historyMeta: document.getElementById("history-meta"),
+  saveHistoryBtn: document.getElementById("save-history-btn"),
+  clearHistoryBtn: document.getElementById("clear-history-btn"),
+  resetDemoBtn: document.getElementById("reset-demo-btn"),
   copySourceBtn: document.getElementById("copy-source-btn"),
   downloadSvgBtn: document.getElementById("download-svg-btn"),
   downloadPngBtn: document.getElementById("download-png-btn"),
@@ -106,6 +110,49 @@ function safeJsonParse(value, fallback) {
   }
 }
 
+function normalizeHistoryEntries(entries) {
+  if (!Array.isArray(entries)) {
+    return [];
+  }
+
+  return entries
+    .map((entry) => {
+      if (typeof entry === "string" && entry.trim()) {
+        return {
+          source: entry,
+          savedAt: new Date().toISOString(),
+        };
+      }
+
+      if (
+        entry &&
+        typeof entry === "object" &&
+        typeof entry.source === "string" &&
+        entry.source.trim()
+      ) {
+        return {
+          source: entry.source,
+          savedAt:
+            typeof entry.savedAt === "string" && entry.savedAt.trim()
+              ? entry.savedAt
+              : new Date().toISOString(),
+        };
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+}
+
+function firstMeaningfulLine(source) {
+  return (
+    source
+      .split("\n")
+      .map((line) => line.trim())
+      .find(Boolean) ?? "Untitled diagram"
+  );
+}
+
 function loadState() {
   const savedDraft = localStorage.getItem(storageKeys.draft);
   const savedHistory = safeJsonParse(localStorage.getItem(storageKeys.history) ?? "[]", []);
@@ -118,9 +165,7 @@ function loadState() {
     state.source = savedDraft;
   }
 
-  if (Array.isArray(savedHistory)) {
-    state.history = savedHistory.filter((entry) => typeof entry === "string" && entry.trim());
-  }
+  state.history = normalizeHistoryEntries(savedHistory);
 
   state.settings = {
     ...state.settings,
@@ -159,18 +204,28 @@ function renderPresetCards() {
 
 function renderHistorySelect() {
   const options = [
-    new Option("Recent diagrams", ""),
+    new Option(
+      state.history.length ? `Recent diagrams (${state.history.length})` : "No saved history yet",
+      "",
+    ),
     ...state.history.map((entry, index) => {
-      const label = entry.split("\n", 1)[0].slice(0, 50) || `Diagram ${index + 1}`;
+      const label = firstMeaningfulLine(entry.source).slice(0, 50) || `Diagram ${index + 1}`;
       return new Option(label, String(index));
     }),
   ];
 
   elements.historySelect.replaceChildren(...options);
+  elements.historyMeta.textContent = state.history.length
+    ? `Stored locally in this browser. Keeping the latest ${state.history.length} diagrams.`
+    : "History is empty until you render or save a diagram.";
 }
 
 function addToHistory(source) {
-  const next = [source, ...state.history.filter((entry) => entry !== source)];
+  const nextEntry = {
+    source,
+    savedAt: new Date().toISOString(),
+  };
+  const next = [nextEntry, ...state.history.filter((entry) => entry.source !== source)];
   state.history = next.slice(0, 10);
   renderHistorySelect();
 }
@@ -247,6 +302,13 @@ function setSource(source, fromPreset = false) {
     saveDraft();
   }
   scheduleRender();
+}
+
+function clearHistory() {
+  state.history = [];
+  localStorage.removeItem(storageKeys.history);
+  renderHistorySelect();
+  setStatus("Local history cleared.", "success");
 }
 
 function serializeSvg(svgElement) {
@@ -457,9 +519,24 @@ function wireEvents() {
 
     const index = Number(elements.historySelect.value);
     if (Number.isInteger(index) && index >= 0 && state.history[index]) {
-      setSource(state.history[index], false);
+      setSource(state.history[index].source, false);
     }
     elements.historySelect.value = "";
+  });
+
+  elements.saveHistoryBtn.addEventListener("click", () => {
+    addToHistory(normalizeSource(elements.input.value));
+    saveDraft();
+    setStatus("Saved snapshot to local history.", "success");
+  });
+
+  elements.clearHistoryBtn.addEventListener("click", () => {
+    clearHistory();
+  });
+
+  elements.resetDemoBtn.addEventListener("click", () => {
+    setSource(defaultSource, true);
+    setStatus("Reset to the default Mermaid demo.", "success");
   });
 
   elements.copySourceBtn.addEventListener("click", () => {
