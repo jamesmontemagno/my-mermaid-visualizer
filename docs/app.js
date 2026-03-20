@@ -676,6 +676,10 @@ async function renderDiagram() {
   mermaid.initialize({
     startOnLoad: false,
     securityLevel: "strict",
+    htmlLabels: false,
+    flowchart: {
+      htmlLabels: false,
+    },
     theme: state.settings.theme,
     themeVariables: buildThemeVariables(),
   });
