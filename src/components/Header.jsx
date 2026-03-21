@@ -1,5 +1,6 @@
 export default function Header({
   onOpenSettings,
+  onOpenHelp,
   onResetDemo,
   onCopySource,
   onExportSvg,
@@ -33,6 +34,13 @@ export default function Header({
       </div>
 
       <div className="hero-actions">
+        <button
+          className="button secondary compact-button"
+          type="button"
+          onClick={onOpenHelp}
+        >
+          ? Help
+        </button>
         <button
           className="button secondary compact-button"
           type="button"

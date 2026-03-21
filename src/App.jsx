@@ -21,6 +21,7 @@ import EditorPanel from "./components/EditorPanel.jsx";
 import PreviewPanel from "./components/PreviewPanel.jsx";
 import SavedDiagrams from "./components/SavedDiagrams.jsx";
 import SettingsDrawer from "./components/SettingsDrawer.jsx";
+import HelpModal from "./components/HelpModal.jsx";
 import FullscreenOverlay from "./components/FullscreenOverlay.jsx";
 import ToastContainer from "./components/ToastContainer.jsx";
 
@@ -43,6 +44,7 @@ export default function App() {
   const [statusMsg, setStatusMsg] = useState("Ready");
   const [statusKind, setStatusKind] = useState("idle");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [fullscreenOpen, setFullscreenOpen] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [fsZoomLevel, setFsZoomLevel] = useState(1);
@@ -388,6 +390,13 @@ export default function App() {
           setSettingsOpen(false);
           return;
         }
+        if (helpOpen) {
+          setHelpOpen(false);
+          return;
+        }
+      }
+      if (event.key === "?" && !event.ctrlKey && !event.metaKey && event.target.tagName !== "TEXTAREA" && event.target.tagName !== "INPUT") {
+        setHelpOpen((prev) => !prev);
       }
       if ((event.ctrlKey || event.metaKey) && event.key === "s" && !event.shiftKey) {
         event.preventDefault();
@@ -411,6 +420,7 @@ export default function App() {
   }, [
     fullscreenOpen,
     settingsOpen,
+    helpOpen,
     handleSaveNamedDiagram,
     handleExportSvg,
     handleExportPng,
@@ -419,16 +429,17 @@ export default function App() {
   // Lock body scroll when overlays are open
   useEffect(() => {
     document.body.style.overflow =
-      settingsOpen || fullscreenOpen ? "hidden" : "";
+      settingsOpen || fullscreenOpen || helpOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [settingsOpen, fullscreenOpen]);
+  }, [settingsOpen, fullscreenOpen, helpOpen]);
 
   return (
     <div className="app-shell">
       <Header
         onOpenSettings={() => setSettingsOpen(true)}
+        onOpenHelp={() => setHelpOpen(true)}
         onResetDemo={handleResetDemo}
         onCopySource={handleCopySource}
         onExportSvg={handleExportSvg}
@@ -488,6 +499,16 @@ export default function App() {
         </>
       )}
 
+      {helpOpen && (
+        <>
+          <div
+            className="settings-backdrop"
+            onClick={() => setHelpOpen(false)}
+          />
+          <HelpModal onClose={() => setHelpOpen(false)} />
+        </>
+      )}
+
       {fullscreenOpen && (
         <FullscreenOverlay
           svgHtml={svgHtml}
@@ -543,7 +564,8 @@ export default function App() {
           Keyboard shortcuts: <kbd>Ctrl</kbd>+<kbd>S</kbd> Save &middot;{" "}
           <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> SVG &middot;{" "}
           <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> PNG &middot;{" "}
-          <kbd>F11</kbd> Fullscreen &middot; <kbd>Esc</kbd> Close overlay
+          <kbd>F11</kbd> Fullscreen &middot; <kbd>?</kbd> Help &middot;{" "}
+          <kbd>Esc</kbd> Close overlay
         </p>
       </footer>
     </div>
