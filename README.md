@@ -6,6 +6,8 @@ A compact, ad-free [Mermaid](https://mermaid.js.org/) diagram editor with live p
 
 ---
 
+![](./images/my-mermaid.jpg)
+
 ## ✨ Features
 
 - **Live preview** — diagrams re-render automatically as you type, with inline error messages
