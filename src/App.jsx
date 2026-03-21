@@ -440,8 +440,6 @@ export default function App() {
       <Header
         onOpenSettings={() => setSettingsOpen(true)}
         onOpenHelp={() => setHelpOpen(true)}
-        onResetDemo={handleResetDemo}
-        onCopySource={handleCopySource}
       />
 
       <main className="workspace">
@@ -457,6 +455,8 @@ export default function App() {
           onClearHistory={handleClearHistory}
           presets={presets}
           onSelectPreset={(preset) => handleSetSource(preset.source, true)}
+          onResetDemo={handleResetDemo}
+          onCopySource={handleCopySource}
         />
 
         <PreviewPanel

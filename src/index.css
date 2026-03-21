@@ -366,6 +366,26 @@ input[type="color"] {
   margin-top: 18px;
 }
 
+.preset-bar {
+  display: flex;
+  align-items: end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.preset-select-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.icon-button {
+  padding: 10px 13px !important;
+  font-size: 1.05rem;
+  min-width: 42px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
 .preset-card {
   border: 1px solid rgba(148, 163, 184, 0.16);
   border-radius: 18px;
