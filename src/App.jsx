@@ -431,9 +431,6 @@ export default function App() {
         onOpenSettings={() => setSettingsOpen(true)}
         onResetDemo={handleResetDemo}
         onCopySource={handleCopySource}
-        onExportSvg={handleExportSvg}
-        onExportPng={handleExportPng}
-        onExportJpeg={handleExportJpeg}
       />
 
       <main className="workspace">
@@ -461,6 +458,9 @@ export default function App() {
           onZoomOut={() => setZoomLevel((z) => Math.max(0.25, z - 0.25))}
           onZoomReset={() => setZoomLevel(1)}
           onFullscreen={handleOpenFullscreen}
+          onExportSvg={handleExportSvg}
+          onExportPng={handleExportPng}
+          onExportJpeg={handleExportJpeg}
         />
       </main>
 

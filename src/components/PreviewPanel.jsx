@@ -1,3 +1,5 @@
+import { useState, useRef, useEffect } from "react";
+
 export default function PreviewPanel({
   svgHtml,
   previewRef,
@@ -8,7 +10,24 @@ export default function PreviewPanel({
   onZoomOut,
   onZoomReset,
   onFullscreen,
+  onExportSvg,
+  onExportPng,
+  onExportJpeg,
 }) {
+  const [exportOpen, setExportOpen] = useState(false);
+  const exportRef = useRef(null);
+
+  useEffect(() => {
+    if (!exportOpen) return;
+    const handler = (e) => {
+      if (exportRef.current && !exportRef.current.contains(e.target)) {
+        setExportOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [exportOpen]);
+
   return (
     <section className="panel preview-panel">
       <div className="panel-header">
@@ -49,6 +68,44 @@ export default function PreviewPanel({
           >
             ⛶
           </button>
+
+          <div className="export-dropdown" ref={exportRef}>
+            <button
+              className="button primary compact-button"
+              type="button"
+              aria-haspopup="true"
+              aria-expanded={exportOpen}
+              onClick={() => setExportOpen((o) => !o)}
+            >
+              Export ▾
+            </button>
+            {exportOpen && (
+              <div className="export-menu" role="menu">
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => { onExportSvg(); setExportOpen(false); }}
+                >
+                  SVG
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => { onExportPng(); setExportOpen(false); }}
+                >
+                  PNG
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => { onExportJpeg(); setExportOpen(false); }}
+                >
+                  JPEG
+                </button>
+              </div>
+            )}
+          </div>
+
           <div
             className={`status ${statusKind === "idle" ? "" : statusKind}`}
             aria-live="polite"

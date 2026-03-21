@@ -1,11 +1,12 @@
+import { useState } from "react";
+
 export default function Header({
   onOpenSettings,
   onResetDemo,
   onCopySource,
-  onExportSvg,
-  onExportPng,
-  onExportJpeg,
 }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <header className="hero">
       <div className="hero-copy">
@@ -19,7 +20,7 @@ export default function Header({
           </div>
         </div>
 
-        <p className="lede">
+        <p className="lede hero-lede">
           Compact, ad-free Mermaid editing with live preview, local history,
           presets, and polished image exports.
         </p>
@@ -34,47 +35,38 @@ export default function Header({
 
       <div className="hero-actions">
         <button
-          className="button secondary compact-button"
+          className="button secondary compact-button mobile-menu-toggle"
           type="button"
-          onClick={onOpenSettings}
+          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((o) => !o)}
         >
-          ⚙ Settings
+          ☰
         </button>
-        <button
-          className="button secondary compact-button"
-          type="button"
-          onClick={onResetDemo}
-        >
-          Reset demo
-        </button>
-        <button
-          className="button secondary compact-button"
-          type="button"
-          onClick={onCopySource}
-        >
-          Copy source
-        </button>
-        <button
-          className="button secondary compact-button"
-          type="button"
-          onClick={onExportSvg}
-        >
-          SVG
-        </button>
-        <button
-          className="button secondary compact-button"
-          type="button"
-          onClick={onExportPng}
-        >
-          PNG
-        </button>
-        <button
-          className="button primary compact-button"
-          type="button"
-          onClick={onExportJpeg}
-        >
-          JPEG
-        </button>
+
+        <div className={`hero-action-buttons${menuOpen ? " menu-open" : ""}`}>
+          <button
+            className="button secondary compact-button"
+            type="button"
+            onClick={() => { onOpenSettings(); setMenuOpen(false); }}
+          >
+            ⚙ Settings
+          </button>
+          <button
+            className="button secondary compact-button"
+            type="button"
+            onClick={() => { onResetDemo(); setMenuOpen(false); }}
+          >
+            Reset demo
+          </button>
+          <button
+            className="button secondary compact-button"
+            type="button"
+            onClick={() => { onCopySource(); setMenuOpen(false); }}
+          >
+            Copy source
+          </button>
+        </div>
       </div>
     </header>
   );
