@@ -6,7 +6,7 @@
     <title>Mermaid Visualizer</title>
     <meta
       name="description"
-      content="Lightweight Mermaid diagram editor, renderer, and exporter for GitHub Pages."
+      content="Modern Mermaid diagram editor with live preview, theme presets, diagram library, and polished SVG/PNG/JPEG exports. Deployed on GitHub Pages."
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -96,10 +96,16 @@
               <h2>Live preview</h2>
               <p>Rendered SVG appears here, along with any syntax errors.</p>
             </div>
-            <div class="status" id="render-status" aria-live="polite"></div>
+            <div class="preview-toolbar">
+              <button class="button secondary compact-button zoom-btn" id="zoom-in-btn" type="button" title="Zoom in">+</button>
+              <button class="button secondary compact-button zoom-btn" id="zoom-reset-btn" type="button" title="Reset zoom">100%</button>
+              <button class="button secondary compact-button zoom-btn" id="zoom-out-btn" type="button" title="Zoom out">−</button>
+              <button class="button secondary compact-button" id="fullscreen-btn" type="button" title="Fullscreen preview">⛶</button>
+              <div class="status" id="render-status" aria-live="polite"></div>
+            </div>
           </div>
 
-          <div class="preview-frame">
+          <div class="preview-frame" id="preview-frame">
             <div class="preview-canvas" id="preview"></div>
           </div>
         </section>
@@ -110,6 +116,11 @@
           <div>
             <h2>Saved diagrams library</h2>
             <p>Keep named diagrams you want to revisit, reload, or clean up later.</p>
+          </div>
+          <div class="library-actions">
+            <button class="button secondary compact-button" id="export-library-btn" type="button" title="Export all saved diagrams as JSON">Export library</button>
+            <button class="button secondary compact-button" id="import-library-btn" type="button" title="Import diagrams from JSON file">Import library</button>
+            <input type="file" id="import-file-input" accept=".json" hidden />
           </div>
         </div>
 
@@ -178,6 +189,21 @@
         </section>
       </aside>
 
+      <div class="fullscreen-overlay" id="fullscreen-overlay" hidden>
+        <div class="fullscreen-toolbar">
+          <span class="fullscreen-title">Fullscreen Preview</span>
+          <button class="button secondary compact-button zoom-btn" id="fs-zoom-in-btn" type="button" title="Zoom in">+</button>
+          <button class="button secondary compact-button zoom-btn" id="fs-zoom-reset-btn" type="button" title="Reset zoom">100%</button>
+          <button class="button secondary compact-button zoom-btn" id="fs-zoom-out-btn" type="button" title="Zoom out">−</button>
+          <button class="button secondary compact-button" id="fs-download-svg-btn" type="button">SVG</button>
+          <button class="button secondary compact-button" id="fs-download-png-btn" type="button">PNG</button>
+          <button class="button primary compact-button" id="fs-close-btn" type="button">Close</button>
+        </div>
+        <div class="fullscreen-canvas" id="fullscreen-canvas"></div>
+      </div>
+
+      <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
       <footer class="site-footer">
         <p>
           Open source on
@@ -197,6 +223,13 @@
             Visual Studio Code
           </a>
           .
+        </p>
+        <p class="shortcuts-hint">
+          Keyboard shortcuts: <kbd>Ctrl</kbd>+<kbd>S</kbd> Save &middot;
+          <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> SVG &middot;
+          <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> PNG &middot;
+          <kbd>F11</kbd> Fullscreen &middot;
+          <kbd>Esc</kbd> Close overlay
         </p>
       </footer>
     </div>

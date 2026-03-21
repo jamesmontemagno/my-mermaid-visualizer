@@ -35,6 +35,57 @@ const presets = [
 `,
   },
   {
+    id: "class",
+    title: "Class",
+    description: "Model object-oriented structures and relationships.",
+    source: `classDiagram
+  class Animal {
+    +String name
+    +int age
+    +makeSound() void
+  }
+  class Dog {
+    +fetch() void
+  }
+  class Cat {
+    +purr() void
+  }
+  Animal <|-- Dog
+  Animal <|-- Cat
+`,
+  },
+  {
+    id: "state",
+    title: "State",
+    description: "Illustrate state transitions and lifecycle events.",
+    source: `stateDiagram-v2
+  [*] --> Idle
+  Idle --> Processing : Start
+  Processing --> Done : Complete
+  Processing --> Error : Fail
+  Error --> Idle : Reset
+  Done --> [*]
+`,
+  },
+  {
+    id: "er",
+    title: "ER Diagram",
+    description: "Entity-relationship diagrams for database modeling.",
+    source: `erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  ORDER ||--|{ LINE_ITEM : contains
+  PRODUCT ||--o{ LINE_ITEM : "is in"
+  CUSTOMER {
+    string name
+    string email
+  }
+  ORDER {
+    int id
+    date created
+  }
+`,
+  },
+  {
     id: "journey",
     title: "Journey",
     description: "Show an experience path with emphasis on sentiment.",
@@ -60,6 +111,90 @@ const presets = [
   Export buttons          :active, a2, after a1, 4d
   section Launch
   GitHub Pages deployment :a3, after a2, 2d
+`,
+  },
+  {
+    id: "pie",
+    title: "Pie Chart",
+    description: "Simple proportion visualization for quick metrics.",
+    source: `pie title Project Time Allocation
+  "Development" : 45
+  "Testing" : 20
+  "Documentation" : 15
+  "Design" : 12
+  "Meetings" : 8
+`,
+  },
+  {
+    id: "gitgraph",
+    title: "Git Graph",
+    description: "Visualize branching and merge strategies.",
+    source: `gitGraph
+  commit
+  branch develop
+  checkout develop
+  commit
+  commit
+  checkout main
+  merge develop
+  commit
+  branch feature
+  checkout feature
+  commit
+  checkout main
+  merge feature
+`,
+  },
+  {
+    id: "mindmap",
+    title: "Mindmap",
+    description: "Brainstorm and organize ideas hierarchically.",
+    source: `mindmap
+  root((Mermaid))
+    Diagrams
+      Flowchart
+      Sequence
+      Class
+    Export
+      SVG
+      PNG
+      JPEG
+    Themes
+      Light
+      Dark
+      Forest
+`,
+  },
+  {
+    id: "timeline",
+    title: "Timeline",
+    description: "Show events along a chronological axis.",
+    source: `timeline
+  title Project Milestones
+  2026-01 : Concept
+          : Research
+  2026-02 : Prototype
+          : User testing
+  2026-03 : Launch
+          : Marketing
+`,
+  },
+  {
+    id: "quadrant",
+    title: "Quadrant",
+    description: "Plot items on a two-axis priority grid.",
+    source: `quadrantChart
+  title Feature Priority Matrix
+  x-axis Low Effort --> High Effort
+  y-axis Low Impact --> High Impact
+  quadrant-1 Plan carefully
+  quadrant-2 Do first
+  quadrant-3 Delegate
+  quadrant-4 Eliminate
+  Feature A: [0.2, 0.8]
+  Feature B: [0.7, 0.9]
+  Feature C: [0.3, 0.3]
+  Feature D: [0.8, 0.2]
 `,
   },
 ];
@@ -217,11 +352,14 @@ const state = {
     backgroundColor: "#0b1120",
     fontSize: 16,
   },
+  zoomLevel: 1,
+  fsZoomLevel: 1,
 };
 
 const elements = {
   input: document.getElementById("mermaid-input"),
   preview: document.getElementById("preview"),
+  previewFrame: document.getElementById("preview-frame"),
   status: document.getElementById("render-status"),
   themeSelect: document.getElementById("theme-select"),
   primaryColor: document.getElementById("primary-color"),
@@ -245,7 +383,40 @@ const elements = {
   downloadSvgBtn: document.getElementById("download-svg-btn"),
   downloadPngBtn: document.getElementById("download-png-btn"),
   downloadJpgBtn: document.getElementById("download-jpg-btn"),
+  zoomInBtn: document.getElementById("zoom-in-btn"),
+  zoomOutBtn: document.getElementById("zoom-out-btn"),
+  zoomResetBtn: document.getElementById("zoom-reset-btn"),
+  fullscreenBtn: document.getElementById("fullscreen-btn"),
+  fullscreenOverlay: document.getElementById("fullscreen-overlay"),
+  fullscreenCanvas: document.getElementById("fullscreen-canvas"),
+  fsCloseBtn: document.getElementById("fs-close-btn"),
+  fsZoomInBtn: document.getElementById("fs-zoom-in-btn"),
+  fsZoomOutBtn: document.getElementById("fs-zoom-out-btn"),
+  fsZoomResetBtn: document.getElementById("fs-zoom-reset-btn"),
+  fsDownloadSvgBtn: document.getElementById("fs-download-svg-btn"),
+  fsDownloadPngBtn: document.getElementById("fs-download-png-btn"),
+  exportLibraryBtn: document.getElementById("export-library-btn"),
+  importLibraryBtn: document.getElementById("import-library-btn"),
+  importFileInput: document.getElementById("import-file-input"),
+  toastContainer: document.getElementById("toast-container"),
 };
+
+/* ── Toast notifications ── */
+
+function showToast(message, kind = "info") {
+  const toast = document.createElement("div");
+  toast.className = `toast ${kind}`;
+  const icon = kind === "success" ? "✓" : kind === "error" ? "✗" : "ℹ";
+  toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${escapeHtml(message)}</span>`;
+  elements.toastContainer.appendChild(toast);
+
+  window.setTimeout(() => {
+    toast.classList.add("toast-out");
+    toast.addEventListener("animationend", () => toast.remove());
+  }, 3000);
+}
+
+/* ── Utility helpers ── */
 
 function safeJsonParse(value, fallback) {
   try {
@@ -347,6 +518,8 @@ function formatSavedAt(savedAt) {
   })}`;
 }
 
+/* ── State persistence ── */
+
 function loadState() {
   const savedDraft = localStorage.getItem(storageKeys.draft);
   const savedHistory = safeJsonParse(localStorage.getItem(storageKeys.history) ?? "[]", []);
@@ -382,6 +555,8 @@ function saveDraft() {
   localStorage.setItem(storageKeys.settings, JSON.stringify(state.settings));
 }
 
+/* ── Theme controls ── */
+
 function updateThemeControls() {
   elements.themeSelect.value = state.settings.theme;
   elements.primaryColor.value = state.settings.primaryColor;
@@ -390,13 +565,15 @@ function updateThemeControls() {
   document.documentElement.style.setProperty("--bg", state.settings.backgroundColor);
 }
 
+/* ── Preset cards ── */
+
 function renderPresetCards() {
   elements.presetGrid.replaceChildren(
     ...presets.map((preset) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "preset-card";
-      button.innerHTML = `<strong>${preset.title}</strong><span>${preset.description}</span>`;
+      button.innerHTML = `<strong>${escapeHtml(preset.title)}</strong><span>${escapeHtml(preset.description)}</span>`;
       button.addEventListener("click", () => {
         setSource(preset.source, true);
       });
@@ -404,6 +581,8 @@ function renderPresetCards() {
     }),
   );
 }
+
+/* ── Theme preset cards ── */
 
 function isThemePresetActive(preset) {
   return (
@@ -432,8 +611,8 @@ function renderThemePresetCards() {
           <span class="theme-swatch" style="background:${accentSoft};"></span>
           <span class="theme-swatch" style="background:${accentDeep};"></span>
         </div>
-        <strong>${preset.title}</strong>
-        <span>${preset.description}</span>
+        <strong>${escapeHtml(preset.title)}</strong>
+        <span>${escapeHtml(preset.description)}</span>
       `;
       button.addEventListener("click", () => {
         state.settings = {
@@ -444,12 +623,15 @@ function renderThemePresetCards() {
         renderThemePresetCards();
         saveDraft();
         scheduleRender();
+        showToast(`Applied the ${preset.title} theme preset.`, "success");
         setStatus(`Applied the ${preset.title} theme preset.`, "success");
       });
       return button;
     }),
   );
 }
+
+/* ── History ── */
 
 function renderHistorySelect() {
   const options = [
@@ -478,6 +660,8 @@ function addToHistory(source) {
   state.history = next.slice(0, 10);
   renderHistorySelect();
 }
+
+/* ── Saved diagram library ── */
 
 function renderSavedDiagrams() {
   if (!state.savedDiagrams.length) {
@@ -518,6 +702,7 @@ function renderSavedDiagrams() {
 
       elements.diagramNameInput.value = diagram.name;
       setSource(diagram.source, false);
+      showToast(`Loaded "${diagram.name}".`, "success");
       setStatus(`Loaded "${diagram.name}".`, "success");
     });
 
@@ -529,6 +714,7 @@ function renderSavedDiagrams() {
       state.savedDiagrams = state.savedDiagrams.filter((entry) => entry.id !== diagram.id);
       saveDraft();
       renderSavedDiagrams();
+      showToast(`Deleted "${diagram.name}".`, "success");
       setStatus(`Deleted "${diagram.name}".`, "success");
     });
 
@@ -546,16 +732,22 @@ function renderSavedDiagrams() {
   elements.savedDiagramsList.replaceChildren(...cards);
 }
 
+/* ── Status ── */
+
 function setStatus(message, kind = "idle") {
   elements.status.textContent = message;
   elements.status.className = `status ${kind === "idle" ? "" : kind}`.trim();
 }
+
+/* ── Settings drawer ── */
 
 function setSettingsDrawerOpen(isOpen) {
   elements.settingsDrawer.hidden = !isOpen;
   elements.settingsBackdrop.hidden = !isOpen;
   document.body.style.overflow = isOpen ? "hidden" : "";
 }
+
+/* ── Color utilities ── */
 
 function textColorFor(hex) {
   const normalized = hex.replace("#", "");
@@ -594,6 +786,8 @@ function adjustColor(hex, amount) {
     .join("")}`;
 }
 
+/* ── Mermaid theme builder ── */
+
 function buildThemeVariables() {
   const primary = state.settings.primaryColor;
   const primaryTextColor = textColorFor(primary);
@@ -611,6 +805,8 @@ function buildThemeVariables() {
     fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
   };
 }
+
+/* ── Source management ── */
 
 function normalizeSource(source) {
   return source.replace(/\r\n/g, "\n").trimEnd() + "\n";
@@ -637,6 +833,7 @@ function saveNamedDiagram() {
   const source = normalizeSource(elements.input.value);
   if (!source.trim()) {
     setStatus("Add Mermaid source before saving a named diagram.", "error");
+    showToast("Add Mermaid source before saving.", "error");
     return;
   }
 
@@ -663,18 +860,66 @@ function saveNamedDiagram() {
   addToHistory(source);
   saveDraft();
   renderSavedDiagrams();
-  setStatus(
-    existing
-      ? `Updated the saved diagram "${nextDiagram.name}".`
-      : `Saved "${nextDiagram.name}" to your diagram library.`,
-    "success",
-  );
+
+  const statusMsg = existing
+    ? `Updated the saved diagram "${nextDiagram.name}".`
+    : `Saved "${nextDiagram.name}" to your diagram library.`;
+  setStatus(statusMsg, "success");
+  showToast(statusMsg, "success");
+}
+
+/* ── SVG serialization (robust) ── */
+
+function collectSvgStyles(svgElement) {
+  const styles = [];
+  const styleElements = svgElement.querySelectorAll("style");
+  for (const el of styleElements) {
+    if (el.textContent) {
+      styles.push(el.textContent);
+    }
+  }
+  return styles.join("\n");
 }
 
 function serializeSvg(svgElement) {
   const clone = svgElement.cloneNode(true);
+
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   clone.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+
+  if (!clone.getAttribute("width") || !clone.getAttribute("height")) {
+    const viewBox = clone.getAttribute("viewBox");
+    if (viewBox) {
+      const parts = viewBox.split(/[\s,]+/).map(Number);
+      if (parts.length === 4 && parts.every(Number.isFinite)) {
+        clone.setAttribute("width", String(parts[2]));
+        clone.setAttribute("height", String(parts[3]));
+      }
+    }
+  }
+
+  const existingStyles = collectSvgStyles(clone);
+
+  const fontStyle = `
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  `;
+  const combinedCSS = fontStyle + "\n" + existingStyles;
+
+  const existingStyleEls = clone.querySelectorAll("style");
+  for (const el of existingStyleEls) {
+    el.remove();
+  }
+
+  const newStyleEl = document.createElementNS("http://www.w3.org/2000/svg", "style");
+  newStyleEl.textContent = combinedCSS;
+  clone.insertBefore(newStyleEl, clone.firstChild);
+
+  const defsEl = clone.querySelector("defs");
+  if (!defsEl) {
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    clone.insertBefore(defs, clone.firstChild);
+  }
+
   return new XMLSerializer().serializeToString(clone);
 }
 
@@ -688,9 +933,9 @@ function readSvgDimensions(svgString) {
 
   const viewBox = svg.getAttribute("viewBox");
   if (viewBox) {
-    const [x, y, width, height] = viewBox.split(/\s+/).map(Number);
-    if ([x, y, width, height].every(Number.isFinite)) {
-      return { width, height };
+    const parts = viewBox.split(/[\s,]+/).map(Number);
+    if (parts.length === 4 && parts.every(Number.isFinite)) {
+      return { width: parts[2], height: parts[3] };
     }
   }
 
@@ -703,6 +948,8 @@ function readSvgDimensions(svgString) {
   return { width: 1200, height: 800 };
 }
 
+/* ── Download helper ── */
+
 function downloadBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
@@ -712,14 +959,29 @@ function downloadBlob(blob, filename) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/* ── Export: SVG ── */
+
 async function exportSvg() {
   const svg = elements.preview.querySelector("svg");
   if (!svg) {
     throw new Error("Render a diagram before exporting SVG.");
   }
-  const blob = new Blob([serializeSvg(svg)], { type: "image/svg+xml;charset=utf-8" });
+
+  const svgMarkup = serializeSvg(svg);
+
+  const validationParser = new DOMParser();
+  const validationDoc = validationParser.parseFromString(svgMarkup, "image/svg+xml");
+  const parseError = validationDoc.querySelector("parsererror");
+  if (parseError) {
+    throw new Error("SVG serialization produced invalid markup. Please try a different diagram.");
+  }
+
+  const blob = new Blob([svgMarkup], { type: "image/svg+xml;charset=utf-8" });
   downloadBlob(blob, "mermaid-diagram.svg");
+  showToast("SVG exported successfully.", "success");
 }
+
+/* ── Export: PNG / JPEG (raster) ── */
 
 async function exportRaster(format) {
   const svg = elements.preview.querySelector("svg");
@@ -750,7 +1012,7 @@ async function exportRaster(format) {
         context.fillStyle = "#ffffff";
         context.fillRect(0, 0, width, height);
       }
-      context.drawImage(image, 0, 0);
+      context.drawImage(image, 0, 0, width, height);
       URL.revokeObjectURL(url);
       resolve();
     };
@@ -773,15 +1035,135 @@ async function exportRaster(format) {
   }
 
   downloadBlob(exported, filename);
+  showToast(`${format.toUpperCase()} exported successfully.`, "success");
 }
+
+/* ── Copy source ── */
 
 async function copySource() {
   await navigator.clipboard.writeText(state.source);
+  showToast("Diagram source copied to clipboard.", "success");
   setStatus("Diagram source copied to clipboard.", "success");
   window.setTimeout(() => {
     setStatus("Ready");
   }, 1800);
 }
+
+/* ── Zoom controls ── */
+
+function applyZoom() {
+  elements.preview.style.transform = `scale(${state.zoomLevel})`;
+  elements.zoomResetBtn.textContent = `${Math.round(state.zoomLevel * 100)}%`;
+}
+
+function zoomIn() {
+  state.zoomLevel = Math.min(5, state.zoomLevel + 0.25);
+  applyZoom();
+}
+
+function zoomOut() {
+  state.zoomLevel = Math.max(0.25, state.zoomLevel - 0.25);
+  applyZoom();
+}
+
+function zoomReset() {
+  state.zoomLevel = 1;
+  applyZoom();
+}
+
+/* ── Fullscreen preview ── */
+
+function openFullscreen() {
+  const svg = elements.preview.querySelector("svg");
+  if (!svg) {
+    showToast("Render a diagram first to use fullscreen.", "error");
+    return;
+  }
+
+  elements.fullscreenCanvas.innerHTML = svg.outerHTML;
+  state.fsZoomLevel = 1;
+  applyFsZoom();
+  elements.fullscreenOverlay.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeFullscreen() {
+  elements.fullscreenOverlay.hidden = true;
+  document.body.style.overflow = "";
+}
+
+function applyFsZoom() {
+  const svg = elements.fullscreenCanvas.querySelector("svg");
+  if (svg) {
+    svg.style.transform = `scale(${state.fsZoomLevel})`;
+    svg.style.transformOrigin = "center center";
+  }
+  elements.fsZoomResetBtn.textContent = `${Math.round(state.fsZoomLevel * 100)}%`;
+}
+
+function fsZoomIn() {
+  state.fsZoomLevel = Math.min(5, state.fsZoomLevel + 0.25);
+  applyFsZoom();
+}
+
+function fsZoomOut() {
+  state.fsZoomLevel = Math.max(0.25, state.fsZoomLevel - 0.25);
+  applyFsZoom();
+}
+
+function fsZoomReset() {
+  state.fsZoomLevel = 1;
+  applyFsZoom();
+}
+
+/* ── Library import/export ── */
+
+function exportLibrary() {
+  if (!state.savedDiagrams.length) {
+    showToast("No diagrams in library to export.", "error");
+    return;
+  }
+
+  const data = JSON.stringify(state.savedDiagrams, null, 2);
+  const blob = new Blob([data], { type: "application/json;charset=utf-8" });
+  downloadBlob(blob, "mermaid-library.json");
+  showToast(`Exported ${state.savedDiagrams.length} diagram(s).`, "success");
+}
+
+function importLibrary(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const parsed = safeJsonParse(reader.result, null);
+    if (!Array.isArray(parsed)) {
+      showToast("Invalid library file. Expected a JSON array.", "error");
+      return;
+    }
+
+    const normalized = normalizeSavedDiagrams(parsed);
+    if (!normalized.length) {
+      showToast("No valid diagrams found in the file.", "error");
+      return;
+    }
+
+    const existingIds = new Set(state.savedDiagrams.map((d) => d.id));
+    let imported = 0;
+    for (const diagram of normalized) {
+      if (!existingIds.has(diagram.id)) {
+        state.savedDiagrams.push(diagram);
+        existingIds.add(diagram.id);
+        imported++;
+      }
+    }
+
+    state.savedDiagrams = state.savedDiagrams.slice(0, 25);
+    saveDraft();
+    renderSavedDiagrams();
+    showToast(`Imported ${imported} new diagram(s).`, "success");
+  };
+  reader.readAsText(file);
+}
+
+/* ── Render engine ── */
 
 async function renderDiagram() {
   const token = ++state.renderToken;
@@ -846,6 +1228,8 @@ function scheduleRender() {
   }, 150);
 }
 
+/* ── Event wiring ── */
+
 function wireEvents() {
   elements.input.addEventListener("input", () => {
     scheduleRender();
@@ -895,6 +1279,7 @@ function wireEvents() {
   elements.saveHistoryBtn.addEventListener("click", () => {
     addToHistory(normalizeSource(elements.input.value));
     saveDraft();
+    showToast("Saved snapshot to local history.", "success");
     setStatus("Saved snapshot to local history.", "success");
   });
 
@@ -904,6 +1289,7 @@ function wireEvents() {
 
   elements.resetDemoBtn.addEventListener("click", () => {
     setSource(defaultSource, true);
+    showToast("Reset to the default Mermaid demo.", "success");
     setStatus("Reset to the default Mermaid demo.", "success");
   });
 
@@ -937,23 +1323,114 @@ function wireEvents() {
   });
 
   elements.downloadSvgBtn.addEventListener("click", () => {
-    void exportSvg().catch((error) => setStatus(error instanceof Error ? error.message : String(error), "error"));
+    void exportSvg().catch((error) => {
+      const msg = error instanceof Error ? error.message : String(error);
+      setStatus(msg, "error");
+      showToast(msg, "error");
+    });
   });
 
   elements.downloadPngBtn.addEventListener("click", () => {
-    void exportRaster("png").catch((error) => setStatus(error instanceof Error ? error.message : String(error), "error"));
+    void exportRaster("png").catch((error) => {
+      const msg = error instanceof Error ? error.message : String(error);
+      setStatus(msg, "error");
+      showToast(msg, "error");
+    });
   });
 
   elements.downloadJpgBtn.addEventListener("click", () => {
-    void exportRaster("jpeg").catch((error) => setStatus(error instanceof Error ? error.message : String(error), "error"));
+    void exportRaster("jpeg").catch((error) => {
+      const msg = error instanceof Error ? error.message : String(error);
+      setStatus(msg, "error");
+      showToast(msg, "error");
+    });
   });
 
+  /* Zoom controls */
+  elements.zoomInBtn.addEventListener("click", zoomIn);
+  elements.zoomOutBtn.addEventListener("click", zoomOut);
+  elements.zoomResetBtn.addEventListener("click", zoomReset);
+
+  /* Fullscreen */
+  elements.fullscreenBtn.addEventListener("click", openFullscreen);
+  elements.fsCloseBtn.addEventListener("click", closeFullscreen);
+  elements.fsZoomInBtn.addEventListener("click", fsZoomIn);
+  elements.fsZoomOutBtn.addEventListener("click", fsZoomOut);
+  elements.fsZoomResetBtn.addEventListener("click", fsZoomReset);
+
+  elements.fsDownloadSvgBtn.addEventListener("click", () => {
+    void exportSvg().catch((error) => {
+      const msg = error instanceof Error ? error.message : String(error);
+      showToast(msg, "error");
+    });
+  });
+
+  elements.fsDownloadPngBtn.addEventListener("click", () => {
+    void exportRaster("png").catch((error) => {
+      const msg = error instanceof Error ? error.message : String(error);
+      showToast(msg, "error");
+    });
+  });
+
+  /* Library import/export */
+  elements.exportLibraryBtn.addEventListener("click", exportLibrary);
+  elements.importLibraryBtn.addEventListener("click", () => {
+    elements.importFileInput.click();
+  });
+  elements.importFileInput.addEventListener("change", () => {
+    const file = elements.importFileInput.files?.[0];
+    if (file) {
+      importLibrary(file);
+      elements.importFileInput.value = "";
+    }
+  });
+
+  /* Keyboard shortcuts */
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !elements.settingsDrawer.hidden) {
-      setSettingsDrawerOpen(false);
+    if (event.key === "Escape") {
+      if (!elements.fullscreenOverlay.hidden) {
+        closeFullscreen();
+        return;
+      }
+      if (!elements.settingsDrawer.hidden) {
+        setSettingsDrawerOpen(false);
+        return;
+      }
+    }
+
+    if ((event.ctrlKey || event.metaKey) && event.key === "s" && !event.shiftKey) {
+      event.preventDefault();
+      saveNamedDiagram();
+    }
+
+    if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === "S") {
+      event.preventDefault();
+      void exportSvg().catch((error) => {
+        const msg = error instanceof Error ? error.message : String(error);
+        showToast(msg, "error");
+      });
+    }
+
+    if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === "P") {
+      event.preventDefault();
+      void exportRaster("png").catch((error) => {
+        const msg = error instanceof Error ? error.message : String(error);
+        showToast(msg, "error");
+      });
+    }
+
+    if (event.key === "F11" && !event.ctrlKey && !event.metaKey) {
+      event.preventDefault();
+      if (elements.fullscreenOverlay.hidden) {
+        openFullscreen();
+      } else {
+        closeFullscreen();
+      }
     }
   });
 }
+
+/* ── Init ── */
 
 function initialize() {
   loadState();
