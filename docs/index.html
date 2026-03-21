@@ -6,201 +6,29 @@
     <title>Mermaid Visualizer</title>
     <meta
       name="description"
-      content="Lightweight Mermaid diagram editor, renderer, and exporter for GitHub Pages."
+      content="Modern Mermaid diagram editor with live preview, theme presets, diagram library, and polished SVG/PNG/JPEG exports."
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" crossorigin src="./assets/index-By91cOGS.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/chunk-CFjPhJqf.js">
+    <link rel="modulepreload" crossorigin href="./assets/src-DNd1jfj7.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-7R4GIKGN-CJNsPTkK.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CfXmrz1P.js">
+    <link rel="modulepreload" crossorigin href="./assets/math-BKVz7c5F.js">
+    <link rel="modulepreload" crossorigin href="./assets/_createAssigner-Cnio_y90.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-GEFDOKGD-BSKyS7pq.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-PU5JKC2W-DNX8rH8c.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-PQ6SQG4A-C7aZuw36.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-YBOYWFTD-CSKiKV5j.js">
+    <link rel="modulepreload" crossorigin href="./assets/rough.esm-MuJqrtdI.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-KYZI473N-BhQ5PDkR.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-MX3YWQON-BrAuzzCC.js">
+    <link rel="modulepreload" crossorigin href="./assets/path-CIRGLb_6.js">
+    <link rel="modulepreload" crossorigin href="./assets/array-BCJ35G43.js">
+    <link rel="modulepreload" crossorigin href="./assets/line-BsMxDVmu.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-O4XLMI2P-D_e-hXCm.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-Bkec3kOt.css">
   </head>
   <body>
-    <div class="app-shell">
-      <header class="hero">
-        <div class="hero-copy">
-          <div class="hero-brand">
-            <div class="brand-mark" aria-hidden="true">M</div>
-            <div>
-              <p class="eyebrow">Mermaid Visualizer</p>
-              <h1>Render Mermaid fast.</h1>
-            </div>
-          </div>
-
-          <p class="lede">
-            Compact, ad-free Mermaid editing with live preview, local history, presets,
-            and polished image exports.
-          </p>
-
-          <div class="hero-meta" aria-label="Product highlights">
-            <span class="meta-pill">Live errors</span>
-            <span class="meta-pill">Local history</span>
-            <span class="meta-pill">SVG / PNG / JPEG</span>
-            <span class="meta-pill">GitHub Pages</span>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <button class="button secondary compact-button" id="open-settings-btn" type="button">⚙ Settings</button>
-          <button class="button secondary compact-button" id="reset-demo-btn" type="button">Reset demo</button>
-          <button class="button secondary compact-button" id="copy-source-btn" type="button">Copy source</button>
-          <button class="button secondary compact-button" id="download-svg-btn" type="button">SVG</button>
-          <button class="button secondary compact-button" id="download-png-btn" type="button">PNG</button>
-          <button class="button primary compact-button" id="download-jpg-btn" type="button">JPEG</button>
-        </div>
-      </header>
-
-      <main class="workspace">
-        <section class="panel editor-panel">
-          <div class="panel-header">
-            <div>
-              <h2>Diagram source</h2>
-              <p>Edit Mermaid text and watch the preview update automatically.</p>
-            </div>
-          </div>
-
-          <div class="management-bar">
-            <label class="field management-name-field">
-              <span>Current diagram name</span>
-              <input
-                id="diagram-name-input"
-                type="text"
-                maxlength="60"
-                placeholder="Architecture overview"
-              />
-            </label>
-
-            <div class="management-actions">
-              <button class="button primary compact-button" id="save-diagram-btn" type="button">
-                Save named diagram
-              </button>
-
-              <label class="field compact">
-                <span>Recent diagrams</span>
-                <select id="history-select"></select>
-              </label>
-
-              <button class="button secondary compact-button" id="save-history-btn" type="button">Save snapshot</button>
-              <button class="button secondary compact-button" id="clear-history-btn" type="button">Clear history</button>
-            </div>
-          </div>
-
-          <p class="history-meta management-meta" id="history-meta"></p>
-
-          <label class="field">
-            <span>Mermaid code</span>
-            <textarea id="mermaid-input" spellcheck="false" aria-label="Mermaid diagram source"></textarea>
-          </label>
-
-          <div class="preset-grid" id="preset-grid" aria-label="Diagram presets"></div>
-        </section>
-
-        <section class="panel preview-panel">
-          <div class="panel-header">
-            <div>
-              <h2>Live preview</h2>
-              <p>Rendered SVG appears here, along with any syntax errors.</p>
-            </div>
-            <div class="status" id="render-status" aria-live="polite"></div>
-          </div>
-
-          <div class="preview-frame">
-            <div class="preview-canvas" id="preview"></div>
-          </div>
-        </section>
-      </main>
-
-      <section class="panel controls-panel">
-        <div class="panel-header">
-          <div>
-            <h2>Saved diagrams library</h2>
-            <p>Keep named diagrams you want to revisit, reload, or clean up later.</p>
-          </div>
-        </div>
-
-        <div class="saved-diagrams-list" id="saved-diagrams-list" aria-live="polite"></div>
-      </section>
-
-      <div class="settings-backdrop" id="settings-backdrop" hidden></div>
-
-      <aside class="settings-drawer" id="settings-drawer" hidden aria-labelledby="settings-title">
-        <div class="settings-drawer-header">
-          <div>
-            <p class="eyebrow">Settings</p>
-            <h2 id="settings-title">Theme and design</h2>
-            <p class="settings-copy">Adjust the visual style without scrolling to the bottom.</p>
-          </div>
-
-          <button class="button secondary compact-button" id="close-settings-btn" type="button">Close</button>
-        </div>
-
-        <section class="control-card">
-          <div class="control-card-header">
-            <div>
-              <h3>Theme presets</h3>
-              <p>Start from a visual mood, then fine-tune the details.</p>
-            </div>
-          </div>
-
-          <div class="theme-preset-grid" id="theme-preset-grid"></div>
-        </section>
-
-        <section class="control-card">
-          <div class="control-card-header">
-            <div>
-              <h3>Manual style controls</h3>
-              <p>Control Mermaid theme mode, color palette, and typography.</p>
-            </div>
-          </div>
-
-          <div class="controls-grid">
-            <label class="field">
-              <span>Theme</span>
-              <select id="theme-select">
-                <option value="base">Base</option>
-                <option value="default">Default</option>
-                <option value="neutral">Neutral</option>
-                <option value="dark">Dark</option>
-                <option value="forest">Forest</option>
-              </select>
-            </label>
-
-            <label class="field">
-              <span>Primary color</span>
-              <input id="primary-color" type="color" value="#2563eb" />
-            </label>
-
-            <label class="field">
-              <span>Background</span>
-              <input id="background-color" type="color" value="#0b1120" />
-            </label>
-
-            <label class="field">
-              <span>Font size</span>
-              <input id="font-size" type="range" min="12" max="24" value="16" />
-            </label>
-          </div>
-        </section>
-      </aside>
-
-      <footer class="site-footer">
-        <p>
-          Open source on
-          <a href="https://github.com/jamesmontemagno/my-mermaid-visualizer" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          and built leveraging
-          <a href="https://github.com/features/copilot" target="_blank" rel="noreferrer">
-            GitHub Copilot
-          </a>
-          ,
-          <a href="https://github.com/features/copilot/cli" target="_blank" rel="noreferrer">
-            Copilot CLI
-          </a>
-          , and
-          <a href="https://code.visualstudio.com/" target="_blank" rel="noreferrer">
-            Visual Studio Code
-          </a>
-          .
-        </p>
-      </footer>
-    </div>
-
-    <script type="module" src="./app.js"></script>
+    <div id="root"></div>
   </body>
 </html>

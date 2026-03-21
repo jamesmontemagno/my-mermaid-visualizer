@@ -1,0 +1,10 @@
+# dependencies
+node_modules
+
+# build output is committed for GitHub Pages
+# docs/
+
+# misc
+.DS_Store
+*.local
+*.log

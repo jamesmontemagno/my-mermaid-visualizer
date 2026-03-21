@@ -20,6 +20,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   margin: 0;
@@ -341,6 +345,20 @@ input[type="color"] {
   flex-direction: column;
 }
 
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.zoom-btn {
+  min-width: 40px;
+  text-align: center;
+  padding: 8px 10px !important;
+  font-size: 0.88rem !important;
+}
+
 .preview-frame {
   flex: 1;
   min-height: 520px;
@@ -358,13 +376,16 @@ input[type="color"] {
     0 12px,
     12px -12px,
     -12px 0;
+  overflow: auto;
+  position: relative;
 }
 
 .preview-canvas {
   min-height: 480px;
   display: grid;
   place-items: center;
-  overflow: auto;
+  transform-origin: center center;
+  transition: transform 0.2s ease;
 }
 
 .preview-canvas svg {
@@ -417,6 +438,12 @@ input[type="color"] {
   margin-bottom: 8px;
 }
 
+.library-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .settings-backdrop {
   position: fixed;
   inset: 0;
@@ -461,6 +488,124 @@ input[type="color"] {
   line-height: 1.5;
 }
 
+/* Fullscreen overlay */
+.fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.fullscreen-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 15, 30, 0.95);
+  backdrop-filter: blur(16px);
+}
+
+.fullscreen-title {
+  font-weight: 700;
+  margin-right: auto;
+  font-size: 1rem;
+}
+
+.fullscreen-canvas {
+  flex: 1;
+  overflow: auto;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  background:
+    linear-gradient(45deg, rgba(148, 163, 184, 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(148, 163, 184, 0.05) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.05) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(148, 163, 184, 0.05) 75%);
+  background-size: 24px 24px;
+  background-position:
+    0 0,
+    0 12px,
+    12px -12px,
+    -12px 0;
+}
+
+.fullscreen-canvas svg {
+  max-width: 100%;
+  height: auto;
+  transition: transform 0.2s ease;
+}
+
+/* Toast notifications */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: grid;
+  gap: 10px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(10, 15, 30, 0.95);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  color: var(--text);
+  font-size: 0.92rem;
+  pointer-events: auto;
+  animation: toast-in 0.3s ease forwards;
+  max-width: 380px;
+}
+
+.toast.toast-out {
+  animation: toast-out 0.25s ease forwards;
+}
+
+.toast.success {
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.toast.error {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+}
+
 .site-footer {
   padding: 8px 8px 4px;
   color: var(--muted);
@@ -479,6 +624,22 @@ input[type="color"] {
 
 .site-footer a:hover {
   text-decoration: underline;
+}
+
+.shortcuts-hint {
+  font-size: 0.82rem;
+  margin-top: 6px !important;
+  opacity: 0.7;
+}
+
+.shortcuts-hint kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(148, 163, 184, 0.08);
+  font-family: inherit;
+  font-size: 0.78rem;
 }
 
 .controls-layout {
@@ -681,5 +842,14 @@ input[type="color"] {
 
   textarea {
     min-height: 360px;
+  }
+
+  .preview-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .library-actions {
+    flex-direction: column;
   }
 }
