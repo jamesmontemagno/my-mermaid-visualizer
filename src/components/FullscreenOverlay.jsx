@@ -12,50 +12,52 @@ export default function FullscreenOverlay({
     <div className="fullscreen-overlay">
       <div className="fullscreen-toolbar">
         <span className="fullscreen-title">Fullscreen Preview</span>
-        <button
-          className="button secondary compact-button zoom-btn"
-          type="button"
-          title="Zoom in"
-          onClick={onZoomIn}
-        >
-          +
-        </button>
-        <button
-          className="button secondary compact-button zoom-btn"
-          type="button"
-          title="Reset zoom"
-          onClick={onZoomReset}
-        >
-          {Math.round(zoomLevel * 100)}%
-        </button>
-        <button
-          className="button secondary compact-button zoom-btn"
-          type="button"
-          title="Zoom out"
-          onClick={onZoomOut}
-        >
-          −
-        </button>
-        <button
-          className="button secondary compact-button"
-          type="button"
-          onClick={onExportSvg}
-        >
-          SVG
-        </button>
-        <button
-          className="button secondary compact-button"
-          type="button"
-          onClick={onExportPng}
-        >
-          PNG
-        </button>
+        <div className="fullscreen-controls">
+          <button
+            className="button secondary compact-button zoom-btn"
+            type="button"
+            title="Zoom in"
+            onClick={onZoomIn}
+          >
+            +
+          </button>
+          <button
+            className="button secondary compact-button zoom-btn"
+            type="button"
+            title="Reset zoom"
+            onClick={onZoomReset}
+          >
+            {Math.round(zoomLevel * 100)}%
+          </button>
+          <button
+            className="button secondary compact-button zoom-btn"
+            type="button"
+            title="Zoom out"
+            onClick={onZoomOut}
+          >
+            −
+          </button>
+          <button
+            className="button secondary compact-button"
+            type="button"
+            onClick={onExportSvg}
+          >
+            SVG
+          </button>
+          <button
+            className="button secondary compact-button"
+            type="button"
+            onClick={onExportPng}
+          >
+            PNG
+          </button>
+        </div>
         <button
           className="button primary compact-button"
           type="button"
           onClick={onClose}
         >
-          Close
+          ✕ Close
         </button>
       </div>
       <div className="fullscreen-canvas">

@@ -573,12 +573,20 @@ input[type="color"] {
   border-bottom: 1px solid var(--border);
   background: rgba(10, 15, 30, 0.95);
   backdrop-filter: blur(16px);
+  flex-wrap: wrap;
 }
 
 .fullscreen-title {
   font-weight: 700;
   margin-right: auto;
   font-size: 1rem;
+}
+
+.fullscreen-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .fullscreen-canvas {
@@ -1001,5 +1009,27 @@ input[type="color"] {
 
   .help-modal {
     width: calc(100vw - 24px);
+  }
+
+  .fullscreen-toolbar {
+    padding: 10px 14px;
+    gap: 6px;
+  }
+
+  .fullscreen-title {
+    font-size: 0.9rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fullscreen-controls {
+    order: 1;
+    width: 100%;
+    justify-content: center;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
   }
 }
