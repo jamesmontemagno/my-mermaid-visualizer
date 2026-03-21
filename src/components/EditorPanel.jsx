@@ -12,6 +12,8 @@ export default function EditorPanel({
   onClearHistory,
   presets,
   onSelectPreset,
+  onResetDemo,
+  onCopySource,
 }) {
   return (
     <section className="panel editor-panel">
@@ -107,18 +109,45 @@ export default function EditorPanel({
         />
       </label>
 
-      <div className="preset-grid" aria-label="Diagram presets">
-        {presets.map((preset) => (
-          <button
-            key={preset.id}
-            type="button"
-            className="preset-card"
-            onClick={() => onSelectPreset(preset)}
+      <div className="preset-bar">
+        <label className="field preset-select-field">
+          <span>Built-in samples</span>
+          <select
+            value=""
+            onChange={(e) => {
+              if (e.target.value) {
+                const preset = presets.find((p) => p.id === e.target.value);
+                if (preset) onSelectPreset(preset);
+                e.target.value = "";
+              }
+            }}
           >
-            <strong>{preset.title}</strong>
-            <span>{preset.description}</span>
-          </button>
-        ))}
+            <option value="">Load a sample diagram…</option>
+            {presets.map((preset) => (
+              <option key={preset.id} value={preset.id}>
+                {preset.title} — {preset.description}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <button
+          className="button secondary compact-button icon-button"
+          type="button"
+          title="Reset to default demo"
+          onClick={onResetDemo}
+        >
+          ↺
+        </button>
+
+        <button
+          className="button secondary compact-button icon-button"
+          type="button"
+          title="Copy source to clipboard"
+          onClick={onCopySource}
+        >
+          📋
+        </button>
       </div>
     </section>
   );

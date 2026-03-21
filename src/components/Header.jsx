@@ -3,8 +3,6 @@ import { useState } from "react";
 export default function Header({
   onOpenSettings,
   onOpenHelp,
-  onResetDemo,
-  onCopySource,
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -59,20 +57,6 @@ export default function Header({
             onClick={() => { onOpenSettings(); setMenuOpen(false); }}
           >
             ⚙ Settings
-          </button>
-          <button
-            className="button secondary compact-button"
-            type="button"
-            onClick={() => { onResetDemo(); setMenuOpen(false); }}
-          >
-            Reset demo
-          </button>
-          <button
-            className="button secondary compact-button"
-            type="button"
-            onClick={() => { onCopySource(); setMenuOpen(false); }}
-          >
-            Copy source
           </button>
         </div>
       </div>
