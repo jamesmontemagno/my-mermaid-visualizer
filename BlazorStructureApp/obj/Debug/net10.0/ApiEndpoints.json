@@ -1,0 +1,34 @@
+[
+  {
+    "ContainingType": "BlazorStructureApp.Api.ConvertEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapConvertEndpoints\u003Eb__0_1",
+    "RelativePath": "api/convert/table-to-tree",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BlazorStructureApp.Api.ConvertEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapConvertEndpoints\u003Eb__0_0",
+    "RelativePath": "api/convert/tree-to-csv",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  }
+]

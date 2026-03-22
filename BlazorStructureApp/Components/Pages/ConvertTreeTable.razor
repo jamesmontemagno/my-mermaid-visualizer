@@ -1,0 +1,154 @@
+@page "/convert"
+@using System.Text
+@using BlazorStructureApp.Conversion
+@inject IWebHostEnvironment Env
+@rendermode InteractiveServer
+
+<PageTitle>Tree ↔ Table Converter</PageTitle>
+
+<h1>Tree ↔ Table Converter</h1>
+
+<div class="row g-4">
+    <div class="col-12 col-xl-6">
+        <h3>Tree (.md) → Table (.csv)</h3>
+        <div class="mb-2 d-flex gap-2 flex-wrap">
+            <InputFile OnChange="OnTreeFileSelected" />
+            <button class="btn btn-sm btn-outline-secondary" @onclick="LoadSampleTree">Load tree001.md</button>
+            <button class="btn btn-sm btn-primary" @onclick="ConvertTreeToCsv">Convert</button>
+        </div>
+        <label class="form-label">Tree input</label>
+        <textarea class="form-control" rows="14" @bind="TreeInput"></textarea>
+
+        <label class="form-label mt-3">CSV output</label>
+        <textarea class="form-control" rows="14" readonly @bind="CsvOutput"></textarea>
+
+        @if (!string.IsNullOrWhiteSpace(CsvOutput))
+        {
+            <div class="mt-2">
+                <a class="btn btn-sm btn-outline-primary" download="table.csv" href="@MakeDataUrl(CsvOutput, "text/csv")">Download CSV</a>
+            </div>
+        }
+    </div>
+
+    <div class="col-12 col-xl-6">
+        <h3>Table (.csv or tab table) → Tree (.md)</h3>
+        <div class="mb-2 d-flex gap-2 flex-wrap">
+            <InputFile OnChange="OnTableFileSelected" />
+            <button class="btn btn-sm btn-outline-secondary" @onclick="LoadSampleTable">Load table001.md</button>
+            <button class="btn btn-sm btn-primary" @onclick="ConvertTableToTree">Convert</button>
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label">Tree title</label>
+            <input class="form-control" @bind="TreeTitle" />
+        </div>
+
+        <label class="form-label">Table input</label>
+        <textarea class="form-control" rows="14" @bind="TableInput"></textarea>
+
+        <label class="form-label mt-3">Tree output</label>
+        <textarea class="form-control" rows="14" readonly @bind="TreeOutput"></textarea>
+
+        @if (!string.IsNullOrWhiteSpace(TreeOutput))
+        {
+            <div class="mt-2">
+                <a class="btn btn-sm btn-outline-primary" download="tree.md" href="@MakeDataUrl(TreeOutput, "text/markdown")">Download tree.md</a>
+            </div>
+        }
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger mt-3">@ErrorMessage</div>
+}
+
+@code {
+    private string TreeInput { get; set; } = "";
+    private string CsvOutput { get; set; } = "";
+
+    private string TableInput { get; set; } = "";
+    private string TreeOutput { get; set; } = "";
+
+    private string TreeTitle { get; set; } = "Current Status";
+    private string? ErrorMessage { get; set; }
+
+    private async Task LoadSampleTree()
+    {
+        ErrorMessage = null;
+        var path = Path.Combine(Env.ContentRootPath, "tree001.md");
+        TreeInput = await File.ReadAllTextAsync(path, Encoding.UTF8);
+    }
+
+    private async Task LoadSampleTable()
+    {
+        ErrorMessage = null;
+        var path = Path.Combine(Env.ContentRootPath, "table001.md");
+        TableInput = await File.ReadAllTextAsync(path, Encoding.UTF8);
+    }
+
+    private async Task OnTreeFileSelected(InputFileChangeEventArgs e)
+    {
+        ErrorMessage = null;
+        var file = e.File;
+        await using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+        using var reader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+        TreeInput = await reader.ReadToEndAsync();
+    }
+
+    private async Task OnTableFileSelected(InputFileChangeEventArgs e)
+    {
+        ErrorMessage = null;
+        var file = e.File;
+        await using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
+
+        if (file.Name.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+        {
+            await using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            ms.Position = 0;
+
+            var rows = XlsxTableReader.ReadFirstSheet(ms);
+            TableInput = TreeTableConverter.TableRowsToCsv(rows);
+            TreeOutput = TreeTableConverter.TableRowsToTreeMarkdown(rows, TreeTitle);
+            return;
+        }
+
+        using var reader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+        TableInput = await reader.ReadToEndAsync();
+    }
+
+    private void ConvertTreeToCsv()
+    {
+        try
+        {
+            ErrorMessage = null;
+            var result = TreeTableConverter.TreeMarkdownToTable(TreeInput);
+            CsvOutput = TreeTableConverter.TableRowsToCsv(result.Rows);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+
+    private void ConvertTableToTree()
+    {
+        try
+        {
+            ErrorMessage = null;
+            var rows = TreeTableConverter.ParseTableText(TableInput);
+            TreeOutput = TreeTableConverter.TableRowsToTreeMarkdown(rows, TreeTitle);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+
+    private static string MakeDataUrl(string text, string mime)
+    {
+        var bytes = Encoding.UTF8.GetBytes(text);
+        return $"data:{mime};charset=utf-8;base64,{Convert.ToBase64String(bytes)}";
+    }
+}

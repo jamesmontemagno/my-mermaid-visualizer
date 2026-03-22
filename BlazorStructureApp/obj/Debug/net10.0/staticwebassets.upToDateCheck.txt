@@ -1,0 +1,97 @@
+wwwroot\app.css
+wwwroot\favicon.png
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+Components\Layout\ReconnectModal.razor.js
+C:\Users\anton\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.2\build\..\_framework\blazor.web.js
+C:\Users\anton\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.2\build\..\_framework\blazor.server.js
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\app.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.js
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+E:\Netaspcore8-5 try\BlazorStructureApp\BlazorStructureApp\Components\Layout\ReconnectModal.razor.js
+C:\Users\anton\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.2\_framework\blazor.web.js
+C:\Users\anton\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.2\_framework\blazor.server.js
