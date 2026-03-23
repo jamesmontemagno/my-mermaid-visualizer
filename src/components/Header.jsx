@@ -11,24 +11,24 @@ export default function Header({
       <div className="hero-copy">
         <div className="hero-brand">
           <div className="brand-mark" aria-hidden="true">
-            M
+            MS
           </div>
           <div>
-            <p className="eyebrow">Mermaid Visualizer</p>
-            <h1>Render Mermaid fast.</h1>
+            <p className="eyebrow">Mermaid Studio</p>
+            <h1>Design Mermaid diagrams live.</h1>
           </div>
         </div>
 
         <p className="lede hero-lede">
-          Compact, ad-free Mermaid editing with live preview, local history,
-          presets, and polished image exports.
+          Local-first Mermaid editing with instant preview, saved history,
+          presets, theme controls, and export-ready diagrams.
         </p>
 
         <div className="hero-meta" aria-label="Product highlights">
           <span className="meta-pill">Live errors</span>
           <span className="meta-pill">Local history</span>
+          <span className="meta-pill">Theme controls</span>
           <span className="meta-pill">SVG / PNG / JPEG</span>
-          <span className="meta-pill">GitHub Pages</span>
         </div>
       </div>
 

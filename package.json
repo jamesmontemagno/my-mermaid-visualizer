@@ -1,11 +1,12 @@
 {
-  "name": "mermaid-visualizer",
+  "name": "mermaid-studio",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "generate:assets": "powershell -ExecutionPolicy Bypass -File ./scripts/generate-brand-assets.ps1",
     "lint": "eslint .",
     "preview": "vite preview"
   },

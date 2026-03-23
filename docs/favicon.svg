@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Mermaid Studio favicon</title>
+  <desc id="desc">Mermaid Studio monogram on a dark gradient tile.</desc>
+  <defs>
+    <linearGradient id="bg" x1="32" y1="28" x2="224" y2="232" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f172a" />
+      <stop offset="0.55" stop-color="#102448" />
+      <stop offset="1" stop-color="#0b1120" />
+    </linearGradient>
+    <linearGradient id="stroke" x1="56" y1="52" x2="196" y2="196" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7dd3fc" />
+      <stop offset="1" stop-color="#38bdf8" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="60" fill="url(#bg)" />
+  <path d="M58 188V68l44 56 46-56v120" fill="none" stroke="url(#stroke)" stroke-linecap="round" stroke-linejoin="round" stroke-width="22" />
+  <path d="M192 74C170 60 146 88 161 112C170 126 195 122 196 140C197 165 171 188 145 180" fill="none" stroke="#e2e8f0" stroke-linecap="round" stroke-linejoin="round" stroke-width="22" />
+  <circle cx="198" cy="66" r="11" fill="#f59e0b" />
+</svg>

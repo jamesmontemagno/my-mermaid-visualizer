@@ -526,7 +526,7 @@ export default function App() {
 
       <footer className="site-footer">
         <p>
-          Open source on{" "}
+          Mermaid Studio is open source on{" "}
           <a
             href="https://github.com/jamesmontemagno/my-mermaid-visualizer"
             target="_blank"
@@ -558,7 +558,7 @@ export default function App() {
           >
             Visual Studio Code
           </a>
-          .
+          . Visit <a href="https://mermaidstudio.app" target="_blank" rel="noreferrer">mermaidstudio.app</a>.
         </p>
         <p className="shortcuts-hint">
           Keyboard shortcuts: <kbd>Ctrl</kbd>+<kbd>S</kbd> Save &middot;{" "}

@@ -2,7 +2,7 @@ export const defaultSource = `flowchart TD
   A[Idea] --> B[Write Mermaid]
   B --> C[Render Preview]
   C --> D[Export SVG/PNG/JPEG]
-  D --> E[Ship to GitHub Pages]
+  D --> E[Publish with Mermaid Studio]
 `;
 
 export const presets = [
@@ -102,13 +102,13 @@ export const presets = [
     title: "Gantt",
     description: "Plan a small roadmap with dates and milestones.",
     source: `gantt
-  title Mermaid Visualizer Roadmap
+  title Mermaid Studio Launch
   dateFormat  YYYY-MM-DD
   section Core
   Editor and preview      :done, a1, 2026-03-01, 3d
   Export buttons          :active, a2, after a1, 4d
   section Launch
-  GitHub Pages deployment :a3, after a2, 2d
+  Custom domain launch    :a3, after a2, 2d
 `,
   },
   {

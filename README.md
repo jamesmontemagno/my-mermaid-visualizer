@@ -1,8 +1,8 @@
-# Mermaid Visualizer
+# Mermaid Studio
 
-A compact, ad-free [Mermaid](https://mermaid.js.org/) diagram editor with live preview, local history, diagram presets, and polished image exports — hosted on GitHub Pages.
+A compact, ad-free [Mermaid](https://mermaid.js.org/) diagram editor with live preview, local history, diagram presets, and polished image exports — available at [mermaidstudio.app](https://mermaidstudio.app/).
 
-🚀 **[Try it live →](https://jamesmontemagno.github.io/my-mermaid-visualizer/)**
+🚀 **[Try it live →](https://mermaidstudio.app/)**
 
 ---
 
@@ -18,7 +18,7 @@ A compact, ad-free [Mermaid](https://mermaid.js.org/) diagram editor with live p
 - **Export** — download your diagram as **SVG**, **PNG**, or **JPEG** with one click
 - **Fullscreen mode** — view and zoom your diagram without distractions
 - **Keyboard shortcuts** — common actions are one key-combo away
-- **Zero server, zero ads** — entirely client-side, deployed to GitHub Pages
+- **Zero server, zero ads** — entirely client-side, deployed to a custom domain
 
 ---
 
@@ -41,7 +41,7 @@ A compact, ad-free [Mermaid](https://mermaid.js.org/) diagram editor with live p
 | [React 19](https://react.dev/) | UI framework |
 | [Vite](https://vitejs.dev/) | Build tool & dev server |
 | [Mermaid.js](https://mermaid.js.org/) | Diagram rendering engine |
-| [GitHub Pages](https://pages.github.com/) | Hosting (served from `docs/`) |
+| [GitHub Pages](https://pages.github.com/) | Hosting for [mermaidstudio.app](https://mermaidstudio.app/) (served from `docs/`) |
 
 ---
 
@@ -70,7 +70,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 npm run build
 ```
 
-The production build is written to `docs/` and is what gets deployed to GitHub Pages.
+The production build is written to `docs/` and is what gets deployed to `mermaidstudio.app`.
 
 ### Lint
 
@@ -90,7 +90,7 @@ my-mermaid-visualizer/
 │   ├── utils/           # SVG export, storage, colour helpers
 │   ├── App.jsx          # Root application component
 │   └── main.jsx         # Entry point
-├── docs/                # Production build output (GitHub Pages root)
+├── docs/                # Production build output for mermaidstudio.app
 ├── index.html           # HTML entry point
 └── vite.config.js       # Vite configuration
 ```
@@ -115,4 +115,4 @@ This project is open source. See the repository on [GitHub](https://github.com/j
 
 ---
 
-Built with ❤️ using [GitHub Copilot](https://github.com/features/copilot), [Copilot CLI](https://github.com/features/copilot/cli), and [Visual Studio Code](https://code.visualstudio.com/).
+Built with [GitHub Copilot](https://github.com/features/copilot), [Copilot CLI](https://github.com/features/copilot/cli), and [Visual Studio Code](https://code.visualstudio.com/).

@@ -1,9 +1,20 @@
 const STORAGE_KEYS = {
-  draft: "mermaid-visualizer:draft",
-  history: "mermaid-visualizer:history",
-  savedDiagrams: "mermaid-visualizer:saved-diagrams",
-  settings: "mermaid-visualizer:settings",
+  draft: ["mermaid-studio:draft", "mermaid-visualizer:draft"],
+  history: ["mermaid-studio:history", "mermaid-visualizer:history"],
+  savedDiagrams: [
+    "mermaid-studio:saved-diagrams",
+    "mermaid-visualizer:saved-diagrams",
+  ],
+  settings: ["mermaid-studio:settings", "mermaid-visualizer:settings"],
 };
+
+function readStorageValue(keys, fallback = null) {
+  for (const key of keys) {
+    const value = localStorage.getItem(key);
+    if (value !== null) return value;
+  }
+  return fallback;
+}
 
 function safeJsonParse(value, fallback) {
   try {
@@ -74,17 +85,17 @@ export function normalizeSavedDiagrams(entries) {
 }
 
 export function loadState(defaultSettings) {
-  const savedDraft = localStorage.getItem(STORAGE_KEYS.draft);
+  const savedDraft = readStorageValue(STORAGE_KEYS.draft);
   const savedHistory = safeJsonParse(
-    localStorage.getItem(STORAGE_KEYS.history) ?? "[]",
+    readStorageValue(STORAGE_KEYS.history, "[]"),
     [],
   );
   const savedDiagrams = safeJsonParse(
-    localStorage.getItem(STORAGE_KEYS.savedDiagrams) ?? "[]",
+    readStorageValue(STORAGE_KEYS.savedDiagrams, "[]"),
     [],
   );
   const savedSettings = safeJsonParse(
-    localStorage.getItem(STORAGE_KEYS.settings) ?? "{}",
+    readStorageValue(STORAGE_KEYS.settings, "{}"),
     {},
   );
 
@@ -97,20 +108,22 @@ export function loadState(defaultSettings) {
 }
 
 export function saveDraft(source, history, savedDiagrams, settings) {
-  localStorage.setItem(STORAGE_KEYS.draft, source);
+  localStorage.setItem(STORAGE_KEYS.draft[0], source);
   localStorage.setItem(
-    STORAGE_KEYS.history,
+    STORAGE_KEYS.history[0],
     JSON.stringify(history.slice(0, 10)),
   );
   localStorage.setItem(
-    STORAGE_KEYS.savedDiagrams,
+    STORAGE_KEYS.savedDiagrams[0],
     JSON.stringify(savedDiagrams.slice(0, 25)),
   );
-  localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(settings));
+  localStorage.setItem(STORAGE_KEYS.settings[0], JSON.stringify(settings));
 }
 
 export function clearHistoryStorage() {
-  localStorage.removeItem(STORAGE_KEYS.history);
+  for (const key of STORAGE_KEYS.history) {
+    localStorage.removeItem(key);
+  }
 }
 
 export function firstMeaningfulLine(source) {
