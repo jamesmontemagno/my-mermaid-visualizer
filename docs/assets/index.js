@@ -50,6 +50,35 @@ import{B as e,R as t,V as n,z as r}from"./vendor.js";(function(){let e=document.
     int id
     date created
   }
+`},{id:`db-schema`,title:`Database Schema`,description:`Visualize table columns and the keys used to join tables.`,source:`erDiagram
+  USERS {
+    int user_id PK
+    string username
+    string email
+    date created_at
+  }
+  ORDERS {
+    int order_id PK
+    int user_id FK
+    date order_date
+    decimal total
+  }
+  ORDER_ITEMS {
+    int item_id PK
+    int order_id FK
+    int product_id FK
+    int quantity
+    decimal unit_price
+  }
+  PRODUCTS {
+    int product_id PK
+    string name
+    decimal price
+    int stock
+  }
+  USERS ||--o{ ORDERS : "user_id"
+  ORDERS ||--|{ ORDER_ITEMS : "order_id"
+  PRODUCTS ||--o{ ORDER_ITEMS : "product_id"
 `},{id:`journey`,title:`Journey`,description:`Show an experience path with emphasis on sentiment.`,source:`journey
   title Diagram journey
   section Draft
