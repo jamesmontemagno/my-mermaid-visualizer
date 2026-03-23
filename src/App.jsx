@@ -40,6 +40,7 @@ export default function App() {
     () => getInitialState().savedDiagrams,
   );
   const [settings, setSettings] = useState(() => getInitialState().settings);
+  const [uiTheme, setUiTheme] = useState(() => getInitialState().settings.uiTheme || "dark");
   const [diagramName, setDiagramName] = useState("");
   const [statusMsg, setStatusMsg] = useState("Ready");
   const [statusKind, setStatusKind] = useState("idle");
@@ -68,6 +69,12 @@ export default function App() {
     setStatusKind(kind);
   }, []);
 
+  const handleToggleUITheme = useCallback(() => {
+    const newTheme = uiTheme === "dark" ? "light" : "dark";
+    setUiTheme(newTheme);
+    setSettings((prev) => ({ ...prev, uiTheme: newTheme }));
+  }, [uiTheme]);
+
   // Persist state on changes
   const persistState = useCallback(
     (src, hist, saved, sett) => {
@@ -83,6 +90,11 @@ export default function App() {
       settings.backgroundColor,
     );
   }, [settings.backgroundColor]);
+
+  // Apply UI theme to DOM
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", uiTheme);
+  }, [uiTheme]);
 
   // Render mermaid diagram
   const renderDiagram = useCallback(
@@ -438,6 +450,8 @@ export default function App() {
   return (
     <div className="app-shell">
       <Header
+        currentUITheme={uiTheme}
+        onToggleUITheme={handleToggleUITheme}
         onOpenSettings={() => setSettingsOpen(true)}
         onOpenHelp={() => setHelpOpen(true)}
       />

@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 export default function Header({
+  currentUITheme,
+  onToggleUITheme,
   onOpenSettings,
   onOpenHelp,
 }) {
@@ -59,6 +61,15 @@ export default function Header({
         </button>
 
         <div className={`hero-action-buttons${menuOpen ? " menu-open" : ""}`}>
+          <button
+            className="button secondary compact-button"
+            type="button"
+            aria-label={`Switch to ${currentUITheme === "dark" ? "light" : "dark"} mode`}
+            onClick={() => { onToggleUITheme(); setMenuOpen(false); }}
+            title={`Toggle ${currentUITheme === "dark" ? "light" : "dark"} mode`}
+          >
+            {currentUITheme === "dark" ? "☀️" : "🌙"}
+          </button>
           <button
             className="button secondary compact-button"
             type="button"
