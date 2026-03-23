@@ -1,19 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
   <title id="title">Mermaid Studio favicon</title>
-  <desc id="desc">Mermaid Studio monogram on a dark gradient tile.</desc>
+  <desc id="desc">A trident mark representing Mermaid Studio — diagram branching meets the sea.</desc>
   <defs>
-    <linearGradient id="bg" x1="32" y1="28" x2="224" y2="232" gradientUnits="userSpaceOnUse">
+    <linearGradient id="bg" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#0f172a" />
-      <stop offset="0.55" stop-color="#102448" />
-      <stop offset="1" stop-color="#0b1120" />
+      <stop offset="1" stop-color="#020617" />
     </linearGradient>
-    <linearGradient id="stroke" x1="56" y1="52" x2="196" y2="196" gradientUnits="userSpaceOnUse">
+    <linearGradient id="glow" x1="80" y1="40" x2="176" y2="216" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#7dd3fc" />
-      <stop offset="1" stop-color="#38bdf8" />
+      <stop offset="0.5" stop-color="#38bdf8" />
+      <stop offset="1" stop-color="#6366f1" />
     </linearGradient>
   </defs>
-  <rect width="256" height="256" rx="60" fill="url(#bg)" />
-  <path d="M58 188V68l44 56 46-56v120" fill="none" stroke="url(#stroke)" stroke-linecap="round" stroke-linejoin="round" stroke-width="22" />
-  <path d="M192 74C170 60 146 88 161 112C170 126 195 122 196 140C197 165 171 188 145 180" fill="none" stroke="#e2e8f0" stroke-linecap="round" stroke-linejoin="round" stroke-width="22" />
-  <circle cx="198" cy="66" r="11" fill="#f59e0b" />
+  <rect width="256" height="256" rx="56" fill="url(#bg)" />
+  <ellipse cx="128" cy="100" rx="80" ry="60" fill="rgba(56,189,248,0.07)" />
+  <!-- Handle -->
+  <line x1="128" y1="214" x2="128" y2="136" stroke="url(#glow)" stroke-width="22" stroke-linecap="round" />
+  <!-- Center prong -->
+  <line x1="128" y1="136" x2="128" y2="48" stroke="url(#glow)" stroke-width="22" stroke-linecap="round" />
+  <!-- Left prong -->
+  <path d="M128 136 C110 104 82 88 60 56" fill="none" stroke="url(#glow)" stroke-width="22" stroke-linecap="round" />
+  <!-- Right prong -->
+  <path d="M128 136 C146 104 174 88 196 56" fill="none" stroke="url(#glow)" stroke-width="22" stroke-linecap="round" />
+  <!-- Tip nodes -->
+  <circle cx="58" cy="54" r="14" fill="#fbbf24" />
+  <circle cx="128" cy="46" r="14" fill="#f8fafc" />
+  <circle cx="198" cy="54" r="14" fill="#fbbf24" />
 </svg>

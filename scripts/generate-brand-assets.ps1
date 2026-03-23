@@ -33,39 +33,51 @@ function New-RoundedPath([float]$x, [float]$y, [float]$width, [float]$height, [f
 }
 
 function Draw-BrandMark($graphics, [float]$x, [float]$y, [float]$size) {
-  $cyanPen = New-Pen "#38bdf8" ($size * 0.1)
-  $whitePen = New-Pen "#e2e8f0" ($size * 0.1)
-  $amberBrush = New-Brush "#f59e0b"
+  $pen = New-Pen "#38bdf8" ($size * 0.09)
+  $amberBrush = New-Brush "#fbbf24"
+  $whiteBrush = New-Brush "#f8fafc"
 
-  $graphics.DrawLines($cyanPen, @(
-    (New-Object System.Drawing.PointF ($x + $size * 0.10), ($y + $size * 0.82)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.10), ($y + $size * 0.20)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.36), ($y + $size * 0.52)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.62), ($y + $size * 0.20)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.62), ($y + $size * 0.82))
-  ))
-
-  $graphics.DrawBezier(
-    $whitePen,
-    (New-Object System.Drawing.PointF ($x + $size * 0.86), ($y + $size * 0.18)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.62), ($y + $size * 0.02)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.52), ($y + $size * 0.42)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.73), ($y + $size * 0.50))
-  )
-  $graphics.DrawBezier(
-    $whitePen,
-    (New-Object System.Drawing.PointF ($x + $size * 0.73), ($y + $size * 0.50)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.96), ($y + $size * 0.58)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.90), ($y + $size * 0.94)),
-    (New-Object System.Drawing.PointF ($x + $size * 0.60), ($y + $size * 0.82))
+  # Handle (bottom stem)
+  $graphics.DrawLine(
+    $pen,
+    (New-Object System.Drawing.PointF ($x + $size * 0.50), ($y + $size * 0.86)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.50), ($y + $size * 0.54))
   )
 
-  $dotSize = $size * 0.09
-  $graphics.FillEllipse($amberBrush, $x + $size * 0.84, $y + $size * 0.08, $dotSize, $dotSize)
+  # Center prong
+  $graphics.DrawLine(
+    $pen,
+    (New-Object System.Drawing.PointF ($x + $size * 0.50), ($y + $size * 0.54)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.50), ($y + $size * 0.18))
+  )
 
-  $cyanPen.Dispose()
-  $whitePen.Dispose()
+  # Left prong
+  $graphics.DrawBezier(
+    $pen,
+    (New-Object System.Drawing.PointF ($x + $size * 0.50), ($y + $size * 0.54)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.43), ($y + $size * 0.41)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.32), ($y + $size * 0.34)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.23), ($y + $size * 0.22))
+  )
+
+  # Right prong
+  $graphics.DrawBezier(
+    $pen,
+    (New-Object System.Drawing.PointF ($x + $size * 0.50), ($y + $size * 0.54)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.57), ($y + $size * 0.41)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.68), ($y + $size * 0.34)),
+    (New-Object System.Drawing.PointF ($x + $size * 0.77), ($y + $size * 0.22))
+  )
+
+  # Tip nodes
+  $r = $size * 0.06
+  $graphics.FillEllipse($amberBrush, $x + $size * 0.23 - $r, $y + $size * 0.21 - $r, $r * 2, $r * 2)
+  $graphics.FillEllipse($whiteBrush, $x + $size * 0.50 - $r, $y + $size * 0.17 - $r, $r * 2, $r * 2)
+  $graphics.FillEllipse($amberBrush, $x + $size * 0.77 - $r, $y + $size * 0.21 - $r, $r * 2, $r * 2)
+
+  $pen.Dispose()
   $amberBrush.Dispose()
+  $whiteBrush.Dispose()
 }
 
 function Save-Png([string]$fileName, [int]$width, [int]$height, [scriptblock]$draw) {

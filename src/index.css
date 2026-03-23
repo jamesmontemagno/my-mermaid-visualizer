@@ -86,10 +86,7 @@ textarea {
   display: grid;
   place-items: center;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(79, 70, 229, 0.9));
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 800;
+  background: linear-gradient(135deg, #0f172a, #020617);
   box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
 }
 

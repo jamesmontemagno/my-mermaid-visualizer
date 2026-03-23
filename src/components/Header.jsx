@@ -11,7 +11,22 @@ export default function Header({
       <div className="hero-copy">
         <div className="hero-brand">
           <div className="brand-mark" aria-hidden="true">
-            MS
+            <svg viewBox="0 0 256 256" width="28" height="28" fill="none">
+              <defs>
+                <linearGradient id="hg" x1="80" y1="40" x2="176" y2="216" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#7dd3fc" />
+                  <stop offset=".5" stopColor="#38bdf8" />
+                  <stop offset="1" stopColor="#6366f1" />
+                </linearGradient>
+              </defs>
+              <line x1="128" y1="214" x2="128" y2="136" stroke="url(#hg)" strokeWidth="24" strokeLinecap="round" />
+              <line x1="128" y1="136" x2="128" y2="48" stroke="url(#hg)" strokeWidth="24" strokeLinecap="round" />
+              <path d="M128 136 C110 104 82 88 60 56" stroke="url(#hg)" strokeWidth="24" strokeLinecap="round" />
+              <path d="M128 136 C146 104 174 88 196 56" stroke="url(#hg)" strokeWidth="24" strokeLinecap="round" />
+              <circle cx="58" cy="54" r="16" fill="#fbbf24" />
+              <circle cx="128" cy="46" r="16" fill="#f8fafc" />
+              <circle cx="198" cy="54" r="16" fill="#fbbf24" />
+            </svg>
           </div>
           <div>
             <p className="eyebrow">Mermaid Studio</p>
