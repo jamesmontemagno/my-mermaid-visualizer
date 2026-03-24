@@ -134,6 +134,7 @@ export const themePresets = [
 ];
 
 export const defaultSettings = {
+  uiTheme: "dark",
   theme: "base",
   primaryColor: "#2563eb",
   backgroundColor: "#0b1120",
