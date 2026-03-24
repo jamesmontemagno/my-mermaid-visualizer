@@ -1,6 +1,7 @@
 :root {
   color-scheme: dark;
   --bg: #0b1120;
+  --diagram-bg: #0b1120;
   --panel: #10192e;
   --panel-2: #15213a;
   --border: rgba(148, 163, 184, 0.18);
@@ -483,7 +484,8 @@ input[type="color"] {
   padding: 18px;
   border-radius: 20px;
   border: 1px dashed rgba(148, 163, 184, 0.2);
-  background:
+  background-color: var(--diagram-bg);
+  background-image:
     linear-gradient(45deg, rgba(148, 163, 184, 0.05) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(148, 163, 184, 0.05) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.05) 75%),
@@ -646,7 +648,8 @@ input[type="color"] {
   display: grid;
   place-items: center;
   padding: 40px;
-  background:
+  background-color: var(--diagram-bg);
+  background-image:
     linear-gradient(45deg, rgba(148, 163, 184, 0.05) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(148, 163, 184, 0.05) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, rgba(148, 163, 184, 0.05) 75%),
