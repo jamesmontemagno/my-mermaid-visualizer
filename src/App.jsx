@@ -40,7 +40,7 @@ export default function App() {
     () => getInitialState().savedDiagrams,
   );
   const [settings, setSettings] = useState(() => getInitialState().settings);
-  const [uiTheme, setUiTheme] = useState(() => getInitialState().settings.uiTheme || "dark");
+  const uiTheme = settings.uiTheme || "dark";
   const [diagramName, setDiagramName] = useState("");
   const [statusMsg, setStatusMsg] = useState("Ready");
   const [statusKind, setStatusKind] = useState("idle");
@@ -70,10 +70,11 @@ export default function App() {
   }, []);
 
   const handleToggleUITheme = useCallback(() => {
-    const newTheme = uiTheme === "dark" ? "light" : "dark";
-    setUiTheme(newTheme);
-    setSettings((prev) => ({ ...prev, uiTheme: newTheme }));
-  }, [uiTheme]);
+    setSettings((prev) => ({
+      ...prev,
+      uiTheme: (prev.uiTheme || "dark") === "dark" ? "light" : "dark",
+    }));
+  }, []);
 
   // Persist state on changes
   const persistState = useCallback(
@@ -83,10 +84,10 @@ export default function App() {
     [],
   );
 
-  // Apply background color CSS variable
+  // Apply diagram background CSS variable
   useEffect(() => {
     document.documentElement.style.setProperty(
-      "--bg",
+      "--diagram-bg",
       settings.backgroundColor,
     );
   }, [settings.backgroundColor]);
