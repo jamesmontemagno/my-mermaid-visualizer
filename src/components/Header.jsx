@@ -65,6 +65,7 @@ export default function Header({
             className="button secondary compact-button"
             type="button"
             aria-label={`Switch to ${currentUITheme === "dark" ? "light" : "dark"} mode`}
+            aria-pressed={currentUITheme === "dark"}
             onClick={() => { onToggleUITheme(); setMenuOpen(false); }}
             title={`Toggle ${currentUITheme === "dark" ? "light" : "dark"} mode`}
           >
